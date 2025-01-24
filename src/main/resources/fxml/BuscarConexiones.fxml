@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.owl.Controllers.ConexionesController" prefHeight="400.0" prefWidth="640.0">
+  <children>
+    <MenuBar AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" text="New" />
+            <MenuItem mnemonicParsing="false" text="Open…" />
+            <Menu mnemonicParsing="false" text="Open Recent" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Close" />
+            <MenuItem mnemonicParsing="false" text="Save" />
+            <MenuItem mnemonicParsing="false" text="Save As…" />
+            <MenuItem mnemonicParsing="false" text="Revert" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Preferences…" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Quit" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Undo" />
+            <MenuItem mnemonicParsing="false" text="Redo" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Cut" />
+            <MenuItem mnemonicParsing="false" text="Copy" />
+            <MenuItem mnemonicParsing="false" text="Paste" />
+            <MenuItem mnemonicParsing="false" text="Delete" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Select All" />
+            <MenuItem mnemonicParsing="false" text="Unselect All" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+
+    <!-- Barra de búsqueda -->
+    <TextField fx:id="searchField" promptText="Buscar..." AnchorPane.topAnchor="30" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" />
+
+    <TableView fx:id="conexionTable" prefHeight="360.0" prefWidth="600.0" AnchorPane.topAnchor="60" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+      <columns>
+        <TableColumn fx:id="nombreCol" text="Nombre" prefWidth="100.0" resizable="true">
+          <cellValueFactory>
+            <PropertyValueFactory property="nombreConexion"/>
+          </cellValueFactory>
+        </TableColumn>
+        <TableColumn fx:id="tipoCol" text="Tipo" prefWidth="100.0" resizable="true">
+          <cellValueFactory>
+            <PropertyValueFactory property="tipoConexion"/>
+          </cellValueFactory>
+        </TableColumn>
+        <TableColumn fx:id="medidasCorteCol" text="Medidas Corte" prefWidth="100.0" resizable="true">
+          <cellValueFactory>
+            <PropertyValueFactory property="medidasCorte"/>
+          </cellValueFactory>
+        </TableColumn>
+        <TableColumn fx:id="medidasCampanasCol" text="Medidas Campanas" prefWidth="100.0" resizable="true">
+          <cellValueFactory>
+            <PropertyValueFactory property="medidasCampanas"/>
+          </cellValueFactory>
+        </TableColumn>
+        <TableColumn fx:id="medidasSalidasCol" text="Medidas Salidas" prefWidth="100.0" resizable="true">
+          <cellValueFactory>
+            <PropertyValueFactory property="medidasCorteSalidas"/>
+          </cellValueFactory>
+        </TableColumn>
+        <TableColumn fx:id="medidasCampanasSalidaCol" text="Medidas Campanas Salida" prefWidth="120.0" resizable="true">
+          <cellValueFactory>
+            <PropertyValueFactory property="medidasCampanasSalidas"/>
+          </cellValueFactory>
+        </TableColumn>
+        <TableColumn fx:id="usoCol" text="Uso" prefWidth="80.0" resizable="true">
+          <cellValueFactory>
+            <PropertyValueFactory property="tipo"/>
+          </cellValueFactory>
+        </TableColumn>
+        <TableColumn fx:id="precioCol" text="Precio" prefWidth="80.0" resizable="true">
+          <cellValueFactory>
+            <PropertyValueFactory property="precio"/>
+          </cellValueFactory>
+        </TableColumn>
+      </columns>
+    </TableView>
+  </children>
+</AnchorPane>

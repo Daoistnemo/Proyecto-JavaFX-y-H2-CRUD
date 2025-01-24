@@ -1,0 +1,55 @@
+#Start1 {
+    -fx-background-image: url("file:src/main/resources/images/opcion1.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
+
+/* Botón base */
+.button {
+    -fx-background-color: #e2f7e2; /* Verde muy claro */
+    background-color: #e2f7e2; /* Propiedad estándar */
+    -fx-text-fill: #333; /* Texto oscuro */
+    color: #333; /* Propiedad estándar */
+    -fx-padding: 10px; /* Aumento del relleno para hacerlo más ancho */
+    padding: 10px;; /* Propiedad estándar */
+    -fx-font-size: 14px; /* Tamaño de fuente */
+    font-size: 14px; /* Propiedad estándar */
+    -fx-font-family: "Segoe UI", Arial, sans-serif; /* Fuente */
+    font-family: "Segoe UI", Arial, sans-serif; /* Propiedad estándar */
+    -fx-background-radius: 12; /* Bordes redondeados */
+    border-radius: 12px; /* Propiedad estándar */
+    -fx-border-radius: 12; /* Bordes redondeados */
+    -fx-border-color: #b1e7b1; /* Color de borde suave en verde */
+    border-color: #b1e7b1; /* Propiedad estándar */
+    -fx-border-width: 2; /* Grosor del borde */
+    border-width: 2px; /* Propiedad estándar */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 8, 0, 0, 4); /* Sombra sutil */
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 4px 0px; /* Propiedad estándar */
+    -fx-cursor: hand; /* Cambia el cursor al pasar sobre el botón */
+    cursor: pointer; /* Propiedad estándar */
+    -fx-transition: all 0.3s ease-in-out; /* Animaciones suaves */
+    transition: all 0.3s ease-in-out; /* Propiedad estándar */
+    -fx-min-width: 120px; /* Establece un ancho mínimo para que el texto quepa */
+    min-width: 120px; /* Propiedad estándar */
+}
+
+/* Hover (al pasar el ratón) */
+.button:hover {
+    -fx-background-color: #d4f3d4; /* Fondo más claro */
+    background-color: #d4f3d4; /* Propiedad estándar */
+    -fx-border-color: #99d699; /* Color de borde más oscuro */
+    border-color: #99d699; /* Propiedad estándar */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 12, 0, 0, 6); /* Sombra más fuerte */
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 6px 0px; /* Propiedad estándar */
+}
+
+/* Botón presionado */
+.button:pressed {
+    -fx-background-color: #c2f0c2; /* Fondo más oscuro */
+    background-color: #c2f0c2; /* Propiedad estándar */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0, 0, 2); /* Sombra más ligera */
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 2px 0px; /* Propiedad estándar */
+    -fx-translate-y: 2; /* Efecto de pulsación */
+    transform: translateY(2px); /* Propiedad estándar */
+}
+

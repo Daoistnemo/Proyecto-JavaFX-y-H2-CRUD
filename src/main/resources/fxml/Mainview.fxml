@@ -84,7 +84,7 @@
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane id="Start1" maxHeight="-1.0" maxWidth="-1.0" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-image: url(&quot;file:src/main/resources/images/opcion1.jpg&quot;); -fx-background-size: cover; -fx-background-position: center center;" stylesheets="@/css/styles.css" VBox.vgrow="ALWAYS">
+<AnchorPane id="Start1" maxHeight="-1.0" maxWidth="-1.0" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-image: url('/images/opcion1.jpg'); -fx-background-size: cover; -fx-background-position: center center;" stylesheets="classpath:/css/styles.css" VBox.vgrow="ALWAYS">
          <children>
             <Button fx:id="startbutton" layoutX="143.0" layoutY="287.0" mnemonicParsing="false" onAction="#click" prefHeight="41.0" prefWidth="116.0" styleClass=".button" text="Comenzar" />
             <Label fx:id="welcomeLabel" layoutX="134.0" layoutY="221.0" text="My little Bag">

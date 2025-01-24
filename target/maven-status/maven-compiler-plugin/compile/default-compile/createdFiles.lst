@@ -2,6 +2,7 @@ com\owl\Controllers\ConexionesModificarController.class
 com\owl\Controllers\EliminarConexionesController.class
 com\owl\Models\Clientes.class
 com\owl\MainApp.class
+com\owl\Utils\ConexionesUtils.class
 com\owl\Controllers\SeleccionOpcionesController.class
 com\owl\Models\Conexiones.class
 com\owl\Utils\DBconexion.class
@@ -11,5 +12,6 @@ com\owl\Models\DetallePedido.class
 com\owl\Controllers\ConexionesAgregarController.class
 com\owl\Controllers\OpConexionesController.class
 com\owl\Models\Pedidos.class
+com\owl\Utils\DBUtils.class
 com\owl\Controllers\MainController.class
 com\owl\Utils\H2Dump.class

@@ -1,18 +1,13 @@
 package com.owl.Controllers;
 
 import com.owl.Models.Conexiones;
-import com.owl.Utils.DBconexion;
+import com.owl.Utils.ConexionesUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class EliminarConexionesController {
 
@@ -68,47 +63,13 @@ public class EliminarConexionesController {
         listaConexiones.clear();
         listaFiltrada.clear();
 
-        try (Connection connection = DBconexion.getConnection()) {
-            String query = "SELECT * FROM conexiones";
-            try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
-
-                while (resultSet.next()) {
-                    Conexiones conexion = new Conexiones(
-                        resultSet.getInt("id"),
-                        resultSet.getString("nombre_conexion"),
-                        resultSet.getString("tipo_conexion"),
-                        resultSet.getString("medidas_corte"),
-                        resultSet.getString("medidas_campanas"),
-                        resultSet.getString("medidas_de_corte_de_salidas"),
-                        resultSet.getString("medidas_de_campanas_de_salidas"),
-                        resultSet.getString("tipo_uso"),
-                        resultSet.getDouble("precio")
-                    );
-                    listaConexiones.add(conexion);
-                }
-            }
-
-            conexionTable.setItems(listaConexiones);
-            listaFiltrada.addAll(listaConexiones);
-        } catch (SQLException e) {
-            mostrarAlerta("Error al cargar conexiones", e.getMessage());
-        }
+        listaConexiones = ConexionesUtils.cargarConexiones("SELECT * FROM conexiones");
+        conexionTable.setItems(listaConexiones);
+        listaFiltrada.addAll(listaConexiones);
     }
 
     private void filtrarConexiones(String filtro) {
-        listaFiltrada.clear();
-        if (filtro == null || filtro.isEmpty()) {
-            listaFiltrada.addAll(listaConexiones);
-        } else {
-            String filtroLower = filtro.toLowerCase();
-            listaConexiones.forEach(conexion -> {
-                if (conexion.getNombreConexion().toLowerCase().contains(filtroLower) ||
-                    conexion.getTipoConexion().toLowerCase().contains(filtroLower)) {
-                    listaFiltrada.add(conexion);
-                }
-            });
-        }
+        listaFiltrada = ConexionesUtils.filtrarConexiones(filtro, listaConexiones);
         conexionTable.setItems(listaFiltrada);
     }
 
@@ -116,41 +77,32 @@ public class EliminarConexionesController {
     void onEliminarButtonClick(ActionEvent event) {
         // Obtener la fila seleccionada
         Conexiones conexionSeleccionada = conexionTable.getSelectionModel().getSelectedItem();
-    
+
         if (conexionSeleccionada == null) {
             mostrarAlerta("Eliminación", "No hay ninguna conexión seleccionada para eliminar.");
             return;
         }
-    
-        // Confirmar eliminación
-        if (!confirmarEliminacion(1)) {
+
+        // Confirmación de eliminación
+        if (!confirmarEliminacion("¿Está seguro de eliminar esta conexión?")) {
             return;
         }
-    
-        // Eliminar conexión de la base de datos
-        try (Connection connection = DBconexion.getConnection()) {
-            String query = "DELETE FROM conexiones WHERE id = ?";
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, conexionSeleccionada.getId());
-                statement.executeUpdate();
-            }
-    
-            // Eliminar la conexión de la lista y actualizar la tabla
-            listaConexiones.remove(conexionSeleccionada);
-            conexionTable.setItems(listaConexiones);
-    
-            mostrarAlerta("Éxito", "Conexión eliminada.");
-        } catch (SQLException e) {
-            mostrarAlerta("Error al eliminar", e.getMessage());
-        }
-    }
-    
 
-    private boolean confirmarEliminacion(int cantidad) {
+        // Eliminar la conexión de la base de datos utilizando ConexionesUtils
+        ConexionesUtils.eliminarConexion(conexionSeleccionada.getId());
+
+        // Eliminar la conexión de la lista y actualizar la tabla
+        listaConexiones.remove(conexionSeleccionada);
+        conexionTable.setItems(listaConexiones);
+
+        mostrarAlerta("Éxito", "Conexión eliminada.");
+    }
+
+    private boolean confirmarEliminacion(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmar Eliminación");
-        alert.setHeaderText("¿Está seguro de eliminar " + cantidad + " conexión?");
-        alert.setContentText("Esta acción no se puede deshacer.");
+        alert.setTitle("Confirmación");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
 
         return alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK;
     }

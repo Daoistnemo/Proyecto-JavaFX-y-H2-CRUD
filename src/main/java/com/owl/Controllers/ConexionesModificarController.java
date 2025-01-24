@@ -1,15 +1,12 @@
 package com.owl.Controllers;
 
 import com.owl.Models.Conexiones;
-import com.owl.Utils.DBconexion;
-
+import com.owl.Utils.ConexionesUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import java.sql.*;
 
 public class ConexionesModificarController {
 
@@ -67,6 +64,7 @@ public class ConexionesModificarController {
         // Llamar a la función para cargar datos desde la base de datos
         cargarConexiones();
 
+        // Filtrar por nombre de conexión
         searchField.textProperty().addListener((observable, oldValue, newValue) -> filtrarConexiones(newValue));
 
         // Asociar los datos con la tabla
@@ -91,55 +89,15 @@ public class ConexionesModificarController {
     // Método para cargar conexiones desde la base de datos
     public void cargarConexiones() {
         listaConexiones.clear();  // Limpiar la lista antes de cargar nuevos datos
-
-        try (Connection connection = DBconexion.getConnection()) {  // Usa DBconexion para obtener la conexión
-            System.out.println("Cargando conexiones desde la base de datos...");
-
-            if (connection == null) {
-                System.out.println("Error: La conexión es nula");
-                return;
-            }
-
-            String query = "SELECT * FROM conexiones";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                // Obtener los datos de cada fila de la tabla de la base de datos
-                int id = resultSet.getInt("id");
-                String nombre = resultSet.getString("nombre_conexion");
-                String tipoConexion = resultSet.getString("tipo_conexion");
-                String medidasCorte = resultSet.getString("medidas_corte");
-                String medidasCampanas = resultSet.getString("medidas_campanas");
-                String medidasCorteSalidas = resultSet.getString("medidas_de_corte_de_salidas");
-                String medidasCampanasSalidas = resultSet.getString("medidas_de_campanas_de_salidas");
-                String tipo = resultSet.getString("tipo_uso");
-                double precio = resultSet.getDouble("precio");
-
-                // Crear un objeto Conexiones con los datos obtenidos
-                Conexiones conexion = new Conexiones(id, nombre, tipoConexion, medidasCorte,
-                        medidasCampanas, medidasCorteSalidas, medidasCampanasSalidas, tipo, precio);
-
-                // Agregar el objeto conexión a la lista observable
-                listaConexiones.add(conexion);
-            }
-
-            // Configurar la tabla para usar la lista de conexiones
-            conexionTable.setItems(listaConexiones);
-
-        } catch (SQLException e) {
-            System.out.println("Error SQL: " + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("Error general: " + e.getMessage());
-            e.printStackTrace();
-        }
+        listaConexiones.addAll(ConexionesUtils.cargarConexiones("SELECT * FROM conexiones"));
+        conexionTable.setItems(listaConexiones);
     }
+
     @FXML
     public void onModificarClick() {
         Conexiones selectedConexion = conexionTable.getSelectionModel().getSelectedItem();
         if (selectedConexion == null) {
-            mostrarAlerta("Error", "Seleccione una conexión para modificar", Alert.AlertType.ERROR);
+            ConexionesUtils.mostrarAlerta("Error", "Seleccione una conexión para modificar", Alert.AlertType.ERROR);
             return;
         }
     
@@ -164,50 +122,14 @@ public class ConexionesModificarController {
         selectedConexion.setPrecio(precio);
     
         // Actualizar la base de datos con los nuevos valores
-        try (Connection connection = DBconexion.getConnection()) {
-            String updateQuery = "UPDATE conexiones SET nombre_conexion = ?, tipo_conexion = ?, medidas_corte = ?, " +
-                    "medidas_campanas = ?, medidas_de_corte_de_salidas = ?, medidas_de_campanas_de_salidas = ?, tipo_uso = ?, precio = ? " +
-                    "WHERE id = ?";
-            PreparedStatement statement = connection.prepareStatement(updateQuery);
-            statement.setString(1, nombre);
-            statement.setString(2, tipo);
-            statement.setString(3, medidasCorte);
-            statement.setString(4, medidasCampanas);
-            statement.setString(5, medidasSalidas);
-            statement.setString(6, medidasCampanasSalidas);
-            statement.setString(7, uso);
-            statement.setDouble(8, precio);
-            statement.setInt(9, selectedConexion.getId());
+        ConexionesUtils.actualizarConexion(selectedConexion);
     
-            int rowsAffected = statement.executeUpdate();
-            if (rowsAffected > 0) {
-                mostrarAlerta("Éxito", "Conexión modificada correctamente", Alert.AlertType.INFORMATION);
-    
-                // Encontrar el índice del objeto actualizado en la lista
-                int index = listaConexiones.indexOf(selectedConexion);
-                if (index >= 0) {
-                    // Reemplazar el objeto en la lista con el actualizado
-                    listaConexiones.set(index, selectedConexion);
-                }
-    
-                // Refrescar la tabla
-                conexionTable.refresh();
-    
-                limpiarCampos();
-            } else {
-                mostrarAlerta("Error", "No se pudo modificar la conexión", Alert.AlertType.ERROR);
-            }
-        } catch (SQLException e) {
-            mostrarAlerta("Error SQL", e.getMessage(), Alert.AlertType.ERROR);
-        }
-    }
-    
+        ConexionesUtils.mostrarAlerta("Éxito", "Conexión modificada correctamente", Alert.AlertType.INFORMATION);
 
-    private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
-        Alert alerta = new Alert(tipo);
-        alerta.setTitle(titulo);
-        alerta.setContentText(mensaje);
-        alerta.showAndWait();
+        // Refrescar la lista de conexiones
+        cargarConexiones();
+
+        limpiarCampos();
     }
 
     private void limpiarCampos() {
@@ -223,16 +145,7 @@ public class ConexionesModificarController {
     }
 
     private void filtrarConexiones(String filtro) {
-        if (filtro == null || filtro.isEmpty()) {
-            conexionTable.setItems(listaConexiones);
-        } else {
-            ObservableList<Conexiones> filtrada = FXCollections.observableArrayList();
-            for (Conexiones conexion : listaConexiones) {
-                if (conexion.getNombreConexion().toLowerCase().contains(filtro.toLowerCase())) {
-                    filtrada.add(conexion);
-                }
-            }
-            conexionTable.setItems(filtrada);
-        }
+        ObservableList<Conexiones> conexionesFiltradas = ConexionesUtils.filtrarConexiones(filtro, listaConexiones);
+        conexionTable.setItems(conexionesFiltradas);
     }
 }

@@ -13,11 +13,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 public class ConexionesController {
 
     @FXML
@@ -50,6 +45,7 @@ public class ConexionesController {
 
     @FXML
     public void initialize() {
+        // Configuración de las columnas de la tabla
         nombreCol.setCellValueFactory(new PropertyValueFactory<>("nombreConexion"));
         tipoCol.setCellValueFactory(new PropertyValueFactory<>("tipoConexion"));
         medidasCorteCol.setCellValueFactory(new PropertyValueFactory<>("medidasCorte"));
@@ -59,8 +55,12 @@ public class ConexionesController {
         usoCol.setCellValueFactory(new PropertyValueFactory<>("tipo"));
         precioCol.setCellValueFactory(new PropertyValueFactory<>("precio"));
 
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> filtrarConexiones(newValue));
+        // Filtrado de las conexiones
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> 
+            conexionTable.setItems(ConexionesUtils.filtrarConexiones(newValue, listaConexiones))
+        );
 
+        // Cargar las conexiones
         cargarConexiones();
     }
 
@@ -75,6 +75,7 @@ public class ConexionesController {
             stage.setTitle("Conexiones");
             stage.show();
 
+            // Cerrar la ventana actual
             Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             currentStage.close();
 
@@ -85,61 +86,11 @@ public class ConexionesController {
         }
     }
 
+    // Cargar las conexiones desde la base de datos
     public void cargarConexiones() {
         listaConexiones.clear();
-
-        // Usa DBconexion en lugar de BDconexion
-        try (Connection connection = DBconexion.getConnection()) {
-            System.out.println("Cargando conexiones desde la base de datos...");
-
-            if (connection == null) {
-                System.out.println("Error: La conexión es nula");
-                return;
-            }
-
-            String query = "SELECT * FROM conexiones";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String nombre = resultSet.getString("nombre_conexion");
-                String tipoConexion = resultSet.getString("tipo_conexion");
-                String medidasCorte = resultSet.getString("medidas_corte");
-                String medidasCampanas = resultSet.getString("medidas_campanas");
-                String medidasCorteSalidas = resultSet.getString("medidas_de_corte_de_salidas");
-                String medidasCampanasSalidas = resultSet.getString("medidas_de_campanas_de_salidas");
-                String tipo = resultSet.getString("tipo_uso");
-                double precio = resultSet.getDouble("precio");
-
-                Conexiones conexion = new Conexiones(id, nombre, tipoConexion, medidasCorte,
-                        medidasCampanas, medidasCorteSalidas, medidasCampanasSalidas, tipo, precio);
-                listaConexiones.add(conexion);
-            }
-
-            conexionTable.setItems(listaConexiones);
-
-        } catch (SQLException e) {
-            System.out.println("Error SQL: " + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("Error general: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    private void filtrarConexiones(String filtro) {
-        if (filtro == null || filtro.isEmpty()) {
-            conexionTable.setItems(listaConexiones);
-        } else {
-            ObservableList<Conexiones> filtrada = FXCollections.observableArrayList();
-            for (Conexiones conexion : listaConexiones) {
-                if (conexion.getNombreConexion().toLowerCase().contains(filtro.toLowerCase()) ||
-                        conexion.getTipoConexion().toLowerCase().contains(filtro.toLowerCase())) {
-                    filtrada.add(conexion);
-                }
-            }
-            conexionTable.setItems(filtrada);
-        }
+        // Usamos el método centralizado de ConexionesUtils para cargar las conexiones
+        listaConexiones = ConexionesUtils.cargarConexiones("SELECT * FROM conexiones");
+        conexionTable.setItems(listaConexiones);
     }
 }

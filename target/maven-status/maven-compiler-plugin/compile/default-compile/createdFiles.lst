@@ -7,6 +7,7 @@ com\owl\Controllers\SeleccionOpcionesController.class
 com\owl\Models\Conexiones.class
 com\owl\Utils\DBconexion.class
 com\owl\Controllers\ConexionesController.class
+com\owl\Controllers\OpPedidosController.class
 com\owl\Utils\H2DatabaseMigration.class
 com\owl\Models\DetallePedido.class
 com\owl\Controllers\ConexionesAgregarController.class

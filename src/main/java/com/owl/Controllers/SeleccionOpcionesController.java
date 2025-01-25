@@ -11,24 +11,45 @@ import javafx.stage.Stage;
 public class SeleccionOpcionesController {
 
     @FXML
-    private Button conexionesButton;  // Botón que abrirá la tabla de conexiones
+    private Button conexionesButton;  // Botón que abrirá la ventana de conexiones
 
- 
     @FXML
-    void onConexionesButtonClick(ActionEvent event) {
-        // Abrir la ventana que muestra la tabla de conexiones
+    private Button pedidosButton;  // Botón que abrirá la ventana de pedidos
+
+    @FXML
+    private Button clientesButton;  // Botón que abrirá la ventana de clientes
+
+    // Método común para cargar ventanas
+    private void loadWindow(String fxmlFile, String title) {
         try {
-            // Si el archivo Conexiones.fxml está en la misma carpeta que el controlador
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/OpConexiones.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             AnchorPane root = loader.load();
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
-            stage.setTitle("Seleccione un Opción");
+            stage.setTitle(title);
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error al cargar la ventana de conexiones: " + e.getMessage());
+            System.out.println("Error al cargar la ventana: " + e.getMessage());
         }
+    }
+
+    @FXML
+    void onConexionesButtonClick(ActionEvent event) {
+        // Abrir la ventana de conexiones
+        loadWindow("/fxml/OpConexiones.fxml", "Seleccione una Opción");
+    }
+
+    @FXML
+    void onPedidosButtonClick(ActionEvent event) {
+        // Abrir la ventana de pedidos
+        loadWindow("/fxml/OpPedidos.fxml", "Seleccione una Opción");
+    }
+
+    @FXML
+    void onClientesButtonClick(ActionEvent event) {
+        // Abrir la ventana de clientes
+        loadWindow("/fxml/Clientes.fxml", "Seleccione una Opción");
     }
 }

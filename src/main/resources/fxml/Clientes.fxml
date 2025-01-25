@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <MenuBar layoutX="120.0" layoutY="97.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <TableView layoutX="13.0" layoutY="31.0" prefHeight="273.0" prefWidth="573.0">
+        <columns>
+          <!-- Columna ID -->
+          <TableColumn prefWidth="75.0" text="ID" fx:id="idColumn" />
+          <!-- Columna Nombre -->
+          <TableColumn prefWidth="150.0" text="Nombre" fx:id="nombreColumn" />
+          <!-- Columna Dirección -->
+          <TableColumn prefWidth="200.0" text="Dirección" fx:id="direccionColumn" />
+          <!-- Columna Teléfono -->
+          <TableColumn prefWidth="100.0" text="Teléfono" fx:id="telefonoColumn" />
+          <!-- Columna Email -->
+          <TableColumn prefWidth="150.0" text="Email" fx:id="emailColumn" />
+          <!-- Columna Fecha de Registro -->
+          <TableColumn prefWidth="150.0" text="Fecha de Registro" fx:id="fechaRegistroColumn" />
+        </columns>
+      </TableView>
+      
+      <!-- Botones simétricos distribuidos -->
+      <Button layoutX="37.0" layoutY="336.0" mnemonicParsing="false" text="Pedidos" AnchorPane.leftAnchor="37.0" AnchorPane.rightAnchor="452.0" />
+      <Button layoutX="180.0" layoutY="336.0" mnemonicParsing="false" text="Agregar" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="308.0" />
+      <Button layoutX="314.0" layoutY="336.0" mnemonicParsing="false" text="Modificar" AnchorPane.leftAnchor="314.0" AnchorPane.rightAnchor="184.0" />
+      <Button layoutX="452.0" layoutY="336.0" mnemonicParsing="false" text="Eliminar" AnchorPane.leftAnchor="452.0" AnchorPane.rightAnchor="37.0" />
+   </children>
+</AnchorPane>

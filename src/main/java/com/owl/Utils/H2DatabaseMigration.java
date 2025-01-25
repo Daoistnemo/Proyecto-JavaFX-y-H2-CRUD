@@ -65,9 +65,9 @@ public class H2DatabaseMigration {
     public static void main(String[] args) {
         // Llamamos al método exportDatabase para exportar la base de datos
         // Descomenta la línea para exportar la base de datos a un archivo SQL
-        exportDatabase();
+        //exportDatabase();
         
         // Si deseas importar la base de datos, descomenta la siguiente línea
-        //importDatabase();
+        importDatabase();
     }
 }

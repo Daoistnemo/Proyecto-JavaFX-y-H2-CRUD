@@ -6,50 +6,58 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.owl.Controllers.ClientesController">
    <children>
-      <MenuBar layoutX="120.0" layoutY="97.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem text="Close" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem text="Delete" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
+          <Menu text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem text="About" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
-      <TableView layoutX="13.0" layoutY="31.0" prefHeight="273.0" prefWidth="573.0">
+
+      <TextField fx:id="searchField" prefWidth="400.0" promptText="Buscar cliente..." AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="35.0" />
+      <Button fx:id="searchButton" layoutX="440.0" layoutY="30.0" text="Buscar" AnchorPane.leftAnchor="440.0" AnchorPane.topAnchor="30.0">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+
+      <TableView fx:id="clientesTable" prefHeight="250.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
         <columns>
-          <!-- Columna ID -->
-          <TableColumn prefWidth="75.0" text="ID" fx:id="idColumn" />
-          <!-- Columna Nombre -->
-          <TableColumn prefWidth="150.0" text="Nombre" fx:id="nombreColumn" />
-          <!-- Columna Dirección -->
-          <TableColumn prefWidth="200.0" text="Dirección" fx:id="direccionColumn" />
-          <!-- Columna Teléfono -->
-          <TableColumn prefWidth="100.0" text="Teléfono" fx:id="telefonoColumn" />
-          <!-- Columna Email -->
-          <TableColumn prefWidth="150.0" text="Email" fx:id="emailColumn" />
-          <!-- Columna Fecha de Registro -->
-          <TableColumn prefWidth="150.0" text="Fecha de Registro" fx:id="fechaRegistroColumn" />
+          <TableColumn fx:id="idColumn" prefWidth="50.0" text="ID" />
+          <TableColumn fx:id="nombreColumn" prefWidth="150.0" text="Nombre" />
+          <TableColumn fx:id="direccionColumn" prefWidth="150.0" text="Dirección" />
+          <TableColumn fx:id="telefonoColumn" prefWidth="100.0" text="Teléfono" />
+          <TableColumn fx:id="emailColumn" prefWidth="150.0" text="Email" />
+          <TableColumn fx:id="fechaRegistroColumn" prefWidth="150.0" text="Fecha de Registro" />
         </columns>
       </TableView>
-      
-      <!-- Botones simétricos distribuidos -->
-      <Button layoutX="37.0" layoutY="336.0" mnemonicParsing="false" text="Pedidos" AnchorPane.leftAnchor="37.0" AnchorPane.rightAnchor="452.0" />
-      <Button layoutX="180.0" layoutY="336.0" mnemonicParsing="false" text="Agregar" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="308.0" />
-      <Button layoutX="314.0" layoutY="336.0" mnemonicParsing="false" text="Modificar" AnchorPane.leftAnchor="314.0" AnchorPane.rightAnchor="184.0" />
-      <Button layoutX="452.0" layoutY="336.0" mnemonicParsing="false" text="Eliminar" AnchorPane.leftAnchor="452.0" AnchorPane.rightAnchor="37.0" />
+
+      <HBox spacing="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
+         <children>
+            <Button fx:id="pedidosButton" text="Pedidos" />
+            <Button fx:id="agregarButton" text="Agregar" />
+            <Button fx:id="modificarButton" text="Modificar" />
+            <Button fx:id="eliminarButton" text="Eliminar" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

@@ -10,9 +10,9 @@
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.owl.Controllers.ConexionesController" prefHeight="400.0" prefWidth="640.0">
+<AnchorPane prefHeight="400.0" prefWidth="640.0" stylesheets="@../css/styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.owl.Controllers.ConexionesController">
   <children>
-    <MenuBar AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+    <MenuBar AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
@@ -53,48 +53,48 @@
     </MenuBar>
 
     <!-- Barra de búsqueda -->
-    <TextField fx:id="searchField" promptText="Buscar..." AnchorPane.topAnchor="30" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" />
+    <TextField fx:id="searchField" promptText="Buscar..." AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="30" />
 
-    <TableView fx:id="conexionTable" prefHeight="360.0" prefWidth="600.0" AnchorPane.topAnchor="60" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+    <TableView fx:id="conexionTable" prefHeight="360.0" prefWidth="600.0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="60">
       <columns>
-        <TableColumn fx:id="nombreCol" text="Nombre" prefWidth="100.0" resizable="true">
+        <TableColumn fx:id="nombreCol" prefWidth="100.0" resizable="true" text="Nombre">
           <cellValueFactory>
-            <PropertyValueFactory property="nombreConexion"/>
+            <PropertyValueFactory property="nombreConexion" />
           </cellValueFactory>
         </TableColumn>
-        <TableColumn fx:id="tipoCol" text="Tipo" prefWidth="100.0" resizable="true">
+        <TableColumn fx:id="tipoCol" prefWidth="100.0" resizable="true" text="Tipo">
           <cellValueFactory>
-            <PropertyValueFactory property="tipoConexion"/>
+            <PropertyValueFactory property="tipoConexion" />
           </cellValueFactory>
         </TableColumn>
-        <TableColumn fx:id="medidasCorteCol" text="Medidas Corte" prefWidth="100.0" resizable="true">
+        <TableColumn fx:id="medidasCorteCol" prefWidth="100.0" resizable="true" text="Medidas Corte">
           <cellValueFactory>
-            <PropertyValueFactory property="medidasCorte"/>
+            <PropertyValueFactory property="medidasCorte" />
           </cellValueFactory>
         </TableColumn>
-        <TableColumn fx:id="medidasCampanasCol" text="Medidas Campanas" prefWidth="100.0" resizable="true">
+        <TableColumn fx:id="medidasCampanasCol" prefWidth="100.0" resizable="true" text="Medidas Campanas">
           <cellValueFactory>
-            <PropertyValueFactory property="medidasCampanas"/>
+            <PropertyValueFactory property="medidasCampanas" />
           </cellValueFactory>
         </TableColumn>
-        <TableColumn fx:id="medidasSalidasCol" text="Medidas Salidas" prefWidth="100.0" resizable="true">
+        <TableColumn fx:id="medidasSalidasCol" prefWidth="100.0" resizable="true" text="Medidas Salidas">
           <cellValueFactory>
-            <PropertyValueFactory property="medidasCorteSalidas"/>
+            <PropertyValueFactory property="medidasCorteSalidas" />
           </cellValueFactory>
         </TableColumn>
-        <TableColumn fx:id="medidasCampanasSalidaCol" text="Medidas Campanas Salida" prefWidth="120.0" resizable="true">
+        <TableColumn fx:id="medidasCampanasSalidaCol" prefWidth="120.0" resizable="true" text="Medidas Campanas Salida">
           <cellValueFactory>
-            <PropertyValueFactory property="medidasCampanasSalidas"/>
+            <PropertyValueFactory property="medidasCampanasSalidas" />
           </cellValueFactory>
         </TableColumn>
-        <TableColumn fx:id="usoCol" text="Uso" prefWidth="80.0" resizable="true">
+        <TableColumn fx:id="usoCol" prefWidth="80.0" resizable="true" text="Uso">
           <cellValueFactory>
-            <PropertyValueFactory property="tipo"/>
+            <PropertyValueFactory property="tipo" />
           </cellValueFactory>
         </TableColumn>
-        <TableColumn fx:id="precioCol" text="Precio" prefWidth="80.0" resizable="true">
+        <TableColumn fx:id="precioCol" prefWidth="80.0" resizable="true" text="Precio">
           <cellValueFactory>
-            <PropertyValueFactory property="precio"/>
+            <PropertyValueFactory property="precio" />
           </cellValueFactory>
         </TableColumn>
       </columns>

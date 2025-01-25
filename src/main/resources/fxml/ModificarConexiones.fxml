@@ -11,7 +11,7 @@
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="640.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.owl.Controllers.ConexionesModificarController">
+<AnchorPane prefHeight="400.0" prefWidth="640.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.owl.Controllers.ConexionesModificarController">
   <children>
     <MenuBar AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
       <menus>
@@ -57,19 +57,19 @@
     <TextField fx:id="searchField" promptText="Buscar..." AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="30" />
 
     <!-- Campos de texto para la modificación -->
-    <TextField fx:id="nombreTextField" promptText="Nombre" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="60" />
-    <TextField fx:id="tipoTextField" promptText="Tipo" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="100" />
-    <TextField fx:id="medidasCorteTextField" promptText="Medidas Corte" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="140" />
-    <TextField fx:id="medidasCampanasTextField" promptText="Medidas Campanas" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="180" />
-    <TextField fx:id="medidasSalidasTextField" promptText="Medidas Salidas" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="220" />
-    <TextField fx:id="medidasCampanasSalidasTextField" promptText="Medidas Campanas Salida" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="260" />
-    <TextField fx:id="usoTextField" promptText="Uso" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="300" />
-    <TextField fx:id="precioTextField" promptText="Precio" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="340" />
+    <TextField fx:id="nombreTextField" layoutX="10.0" layoutY="64.0" promptText="Nombre" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="64.0" />
+    <TextField fx:id="tipoTextField" layoutX="10.0" layoutY="103.0" promptText="Tipo" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="103.0" />
+    <TextField fx:id="medidasCorteTextField" layoutX="10.0" layoutY="143.0" promptText="Medidas Corte" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="143.0" />
+    <TextField fx:id="medidasCampanasTextField" layoutX="10.0" layoutY="183.0" promptText="Medidas Campanas" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="183.0" />
+    <TextField fx:id="medidasSalidasTextField" layoutX="10.0" layoutY="223.0" promptText="Medidas Salidas" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="223.0" />
+    <TextField fx:id="medidasCampanasSalidasTextField" layoutX="10.0" layoutY="263.0" promptText="Medidas Campanas Salida" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="263.0" />
+    <TextField fx:id="usoTextField" layoutX="10.0" layoutY="303.0" promptText="Uso" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="303.0" />
+    <TextField fx:id="precioTextField" layoutX="10.0" layoutY="343.0" promptText="Precio" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="343.0" />
 
     <!-- Botón para modificar -->
-    <Button fx:id="modificarButton" layoutX="175.0" layoutY="365.0" onAction="#onModificarClick" text="Modificar" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="365.0" />
+    <Button fx:id="modificarButton" layoutX="506.0" layoutY="350.0" minWidth="107.0" onAction="#onModificarClick" prefHeight="32.0" prefWidth="107.0" text="Modificar" AnchorPane.leftAnchor="506.0" AnchorPane.topAnchor="350.0" />
 
-    <TableView fx:id="conexionTable" prefHeight="360.0" prefWidth="600.0" AnchorPane.bottomAnchor="60" AnchorPane.leftAnchor="250" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="60">
+    <TableView fx:id="conexionTable" layoutX="183.0" layoutY="65.0" prefHeight="280.0" prefWidth="443.0" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="183.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="65.0">
       <columns>
         <TableColumn fx:id="nombreCol" prefWidth="100.0" resizable="true" text="Nombre">
           <cellValueFactory>

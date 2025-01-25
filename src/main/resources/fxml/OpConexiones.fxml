@@ -7,9 +7,9 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" fx:controller="com.owl.Controllers.OpConexionesController" prefWidth="400.0">
+<AnchorPane prefHeight="400.0" prefWidth="400.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.owl.Controllers.OpConexionesController">
   <children>
-    <MenuBar AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+    <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
@@ -48,19 +48,12 @@
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane layoutY="25.0" 
-                AnchorPane.topAnchor="25.0" 
-                AnchorPane.leftAnchor="0.0" 
-                AnchorPane.rightAnchor="0.0" 
-                AnchorPane.bottomAnchor="0.0" 
-                prefHeight="375.0" 
-                prefWidth="400.0" 
-                style="-fx-background-image: url('/images/opcion1.jpg'); -fx-background-size: cover; -fx-background-position: center center;" stylesheets="classpath:/css/styles.css">
+    <AnchorPane layoutY="25.0" prefHeight="375.0" prefWidth="400.0" style="-fx-background-image: url('/images/opcion1.jpg'); -fx-background-size: cover; -fx-background-position: center center;" stylesheets="classpath:/css/styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
       <children>
-        <Button layoutX="145.0" layoutY="125.0" mnemonicParsing="false" onAction="#onAgregarConexionClick" prefHeight="45.0" prefWidth="111.0" text="Agregar Nueva" />
-        <Button layoutX="145.0" layoutY="227.0" mnemonicParsing="false" onAction="#onEliminarConexionClick" prefHeight="45.0" prefWidth="111.0" text="Eliminar " />
-        <Button layoutX="145.0" layoutY="176.0" mnemonicParsing="false" onAction="#onModificarConexionClick" prefHeight="45.0" prefWidth="111.0" text="Modificar" />
-        <Button layoutX="145.0" layoutY="74.0" mnemonicParsing="false"  onAction="#onBuscarButtonClick" prefHeight="45.0" prefWidth="111.0" text="Buscar" />
+        <Button layoutX="145.0" layoutY="137.0" mnemonicParsing="false" onAction="#onAgregarConexionClick" prefHeight="45.0" prefWidth="111.0" text="Agregar Nueva" />
+        <Button layoutX="145.0" layoutY="254.0" mnemonicParsing="false" onAction="#onEliminarConexionClick" prefHeight="45.0" prefWidth="111.0" text="Eliminar " />
+        <Button layoutX="145.0" layoutY="196.0" mnemonicParsing="false" onAction="#onModificarConexionClick" prefHeight="45.0" prefWidth="111.0" text="Modificar" />
+        <Button layoutX="145.0" layoutY="78.0" mnemonicParsing="false" onAction="#onBuscarButtonClick" prefHeight="45.0" prefWidth="111.0" text="Buscar" />
       </children>
     </AnchorPane>
   </children>

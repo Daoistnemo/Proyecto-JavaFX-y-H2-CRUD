@@ -47,7 +47,7 @@
     </MenuBar>
 
     <!-- Panel principal -->
-     <AnchorPane layoutY="25.0" prefHeight="375.0" prefWidth="400.0" style="-fx-background-image: url('/images/opcion1.jpg'); -fx-background-size: cover; -fx-background-position: center center;" stylesheets="classpath:/css/styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0"> <children>
+     <AnchorPane layoutY="25.0" prefHeight="375.0" prefWidth="400.0" style="-fx-background-image: url('/images/opcion1.jpg'); -fx-background-size: cover; -fx-background-position: center center;"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0"> <children>
         <GridPane fx:id="root" alignment="CENTER" hgap="10" vgap="10" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
           <!-- Campos del formulario -->
          <!-- Campos del formulario -->

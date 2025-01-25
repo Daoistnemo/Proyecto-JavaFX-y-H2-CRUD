@@ -48,7 +48,7 @@
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane layoutY="25.0" prefHeight="375.0" prefWidth="400.0" style="-fx-background-image: url('/images/opcion1.jpg'); -fx-background-size: cover; -fx-background-position: center center;" stylesheets="classpath:/css/styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+    <AnchorPane layoutY="25.0" prefHeight="375.0" prefWidth="400.0" style="-fx-background-image: url('/images/opcion1.jpg'); -fx-background-size: cover; -fx-background-position: center center;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
       <children>
         <Button layoutX="145.0" layoutY="137.0" mnemonicParsing="false" onAction="#onAgregarConexionClick" prefHeight="45.0" prefWidth="111.0" text="Agregar Nueva" />
         <Button layoutX="145.0" layoutY="254.0" mnemonicParsing="false" onAction="#onEliminarConexionClick" prefHeight="45.0" prefWidth="111.0" text="Eliminar " />

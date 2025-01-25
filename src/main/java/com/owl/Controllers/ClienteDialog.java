@@ -1,7 +1,6 @@
 package com.owl.Controllers;
 
 import com.owl.Models.Cliente;
-import com.owl.Utils.ClientesUtils;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;

@@ -1,5 +1,7 @@
 package com.owl.Controllers;
 
+import com.owl.Utils.iconUtils;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +28,8 @@ public class OpConexionesController {
             stage.show();
 
             // Cerrar la ventana actual
+            iconUtils.loadAndSetStageIcon(stage, "/images/icon1.png");
+
             Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             currentStage.close();
 

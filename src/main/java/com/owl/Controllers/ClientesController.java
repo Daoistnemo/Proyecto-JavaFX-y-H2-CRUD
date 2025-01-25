@@ -2,10 +2,14 @@ package com.owl.Controllers;
 
 import com.owl.Models.Cliente;
 import com.owl.Utils.ClientesUtils;
+import com.owl.Utils.iconUtils;
+
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 public class ClientesController {
 
@@ -41,7 +45,17 @@ public class ClientesController {
 
         // Configurar eventos
         configurarEventos();
+                cargarClientes();
+        configurarEventos();
+
+        // Configurar Stage con ícono
+        Platform.runLater(() -> {
+            Stage stage = (Stage) clientesTable.getScene().getWindow();
+            stage.setTitle("Clientes");
+            iconUtils.loadAndSetStageIcon(stage, "/images/icon1.png");
+        });
     }
+    
 
     private void configurarEventos() {
         // Búsqueda de clientes

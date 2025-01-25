@@ -1,5 +1,7 @@
 package com.owl.Controllers;
 
+import com.owl.Utils.iconUtils;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +31,12 @@ public class SeleccionOpcionesController {
             stage.setScene(scene);
             stage.setTitle(title);
             stage.show();
+
+        // Establecer el ícono compartido
+        if (iconUtils.getSharedIcon() != null) {
+            stage.getIcons().add(iconUtils.getSharedIcon());
+
+        }       
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error al cargar la ventana: " + e.getMessage());

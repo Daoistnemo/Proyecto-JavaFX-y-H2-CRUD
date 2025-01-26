@@ -31,7 +31,7 @@ public class ConexionesUtils {
     // Método para obtener una conexión por su ID
     public static Conexiones obtenerConexionPorId(int idConexion) {
         Conexiones conexion = null;
-        String sql = "SELECT * FROM conexiones WHERE idConexion = ?";
+        String sql = "SELECT * FROM CONEXIONES WHERE ID = ?";
 
         try (Connection conn = DBconexion.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -42,15 +42,15 @@ public class ConexionesUtils {
 
             if (rs.next()) {
                 conexion = new Conexiones(
-                        rs.getInt("idConexion"),
-                        rs.getString("nombreConexion"),
-                        rs.getString("tipoConexion"),
-                        rs.getString("medidasCorte"),
-                        rs.getString("medidasCampanas"),
-                        rs.getString("medidasCorteSalidas"),
-                        rs.getString("medidasCampanasSalidas"),
-                        rs.getString("tipo"),
-                        rs.getDouble("precio")
+                        rs.getInt("ID"),
+                        rs.getString("NOMBRE_CONEXION"),
+                        rs.getString("TIPO_CONEXION"),
+                        rs.getString("MEDIDAS_CORTE"),
+                        rs.getString("MEDIDAS_CAMPANAS"),
+                        rs.getString("MEDIDAS_DE_CORTE_DE_SALIDAS"),
+                        rs.getString("MEDIDAS_DE_CAMPANAS_DE_SALIDAS"),
+                        rs.getString("TIPO_USO"),
+                        rs.getDouble("PRECIO")
                 );
             }
         } catch (SQLException e) {
@@ -69,15 +69,15 @@ public class ConexionesUtils {
 
             while (resultSet.next()) {
                 Conexiones conexion = new Conexiones(
-                        resultSet.getInt("id"),
-                        resultSet.getString("nombre_conexion"),
-                        resultSet.getString("tipo_conexion"),
-                        resultSet.getString("medidas_corte"),
-                        resultSet.getString("medidas_campanas"),
-                        resultSet.getString("medidas_de_corte_de_salidas"),
-                        resultSet.getString("medidas_de_campanas_de_salidas"),
-                        resultSet.getString("tipo_uso"),
-                        resultSet.getDouble("precio")
+                        resultSet.getInt("ID"),
+                        resultSet.getString("NOMBRE_CONEXION"),
+                        resultSet.getString("TIPO_CONEXION"),
+                        resultSet.getString("MEDIDAS_CORTE"),
+                        resultSet.getString("MEDIDAS_CAMPANAS"),
+                        resultSet.getString("MEDIDAS_DE_CORTE_DE_SALIDAS"),
+                        resultSet.getString("MEDIDAS_DE_CAMPANAS_DE_SALIDAS"),
+                        resultSet.getString("TIPO_USO"),
+                        resultSet.getDouble("PRECIO")
                 );
                 if (!listaConexiones.contains(conexion)) {
                     listaConexiones.add(conexion);
@@ -115,7 +115,7 @@ public class ConexionesUtils {
 
     // Método para eliminar una conexión
     public static void eliminarConexion(int id) {
-        String query = "DELETE FROM conexiones WHERE id = ?";
+        String query = "DELETE FROM CONEXIONES WHERE ID = ?";
         try {
             ejecutarConsulta(query, id);
         } catch (SQLException e) {
@@ -130,8 +130,8 @@ public class ConexionesUtils {
             return -1;
         }
 
-        String query = "INSERT INTO conexiones (nombre_conexion, tipo_conexion, medidas_corte, medidas_campanas, " +
-                "medidas_de_corte_de_salidas, medidas_de_campanas_de_salidas, tipo_uso, precio) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO CONEXIONES (NOMBRE_CONEXION, TIPO_CONEXION, MEDIDAS_CORTE, MEDIDAS_CAMPANAS, " +
+                "MEDIDAS_DE_CORTE_DE_SALIDAS, MEDIDAS_DE_CAMPANAS_DE_SALIDAS, TIPO_USO, PRECIO) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         int generatedId = -1;
         try (Connection conn = DBconexion.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -162,7 +162,7 @@ public class ConexionesUtils {
 
     // Método para verificar existencia de conexión por nombre
     private static boolean existeConexionPorNombre(String nombreConexion) {
-        String query = "SELECT COUNT(*) FROM conexiones WHERE nombre_conexion = ?";
+        String query = "SELECT COUNT(*) FROM CONEXIONES WHERE NOMBRE_CONEXION = ?";
         try (Connection conn = DBconexion.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
@@ -189,8 +189,8 @@ public class ConexionesUtils {
             return;
         }
 
-        String query = "UPDATE conexiones SET nombre_conexion = ?, tipo_conexion = ?, medidas_corte = ?, medidas_campanas = ?, " +
-                "medidas_de_corte_de_salidas = ?, medidas_de_campanas_de_salidas = ?, tipo_uso = ?, precio = ? WHERE id = ?";
+        String query = "UPDATE CONEXIONES SET NOMBRE_CONEXION = ?, TIPO_CONEXION = ?, MEDIDAS_CORTE = ?, MEDIDAS_CAMPANAS = ?, " +
+                "MEDIDAS_DE_CORTE_DE_SALIDAS = ?, MEDIDAS_DE_CAMPANAS_DE_SALIDAS = ?, TIPO_USO = ?, PRECIO = ? WHERE ID = ?";
         try (Connection conn = obtenerConexion();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
@@ -216,7 +216,7 @@ public class ConexionesUtils {
 
     // Método para verificar si una conexión existe por ID
     private static boolean existeConexion(int id) {
-        String query = "SELECT COUNT(*) FROM conexiones WHERE id = ?";
+        String query = "SELECT COUNT(*) FROM CONEXIONES WHERE ID = ?";
         try (Connection conn = obtenerConexion();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 

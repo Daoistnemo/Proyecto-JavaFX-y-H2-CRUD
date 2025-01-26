@@ -64,6 +64,7 @@ public class PedidosController {
     @FXML
     public void initialize() {
         // Configurar las columnas de la tabla de pedidos
+        
         idPedidoColumn.setCellValueFactory(new PropertyValueFactory<>("idPedido"));
         estadoPedidoColumn.setCellValueFactory(new PropertyValueFactory<>("estadoPedido"));
         observacionesColumn.setCellValueFactory(new PropertyValueFactory<>("observaciones"));
@@ -76,6 +77,7 @@ public class PedidosController {
         cantidadColumn.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         precioUnitarioColumn.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
         subtotalColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
+        
 
         // Cargar los pedidos al inicializar
         cargarPedidos();
@@ -262,7 +264,7 @@ public class PedidosController {
             PedidosUtils.guardarPedido(pedidoActual);
             PedidosUtils.guardarDetallesPedido(pedidoActual);
             detallesPedidoTableView.getItems().clear();
-            totalPedidoField.clear();
+        totalPedidoField.clear();
     
             mostrarExito("Pedido guardado con éxito.");
             cargarPedidos();  // Recargar la lista de pedidos

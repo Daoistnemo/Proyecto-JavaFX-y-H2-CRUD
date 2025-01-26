@@ -7,16 +7,17 @@ import com.owl.Models.Cliente;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PedidosUtils {
+    private static final Logger LOGGER = Logger.getLogger(PedidosUtils.class.getName());
 
-    // Cargar los pedidos desde la base de datos
     public static List<Pedidos> cargarPedidos(String sql, Object... params) {
         List<Pedidos> listaPedidos = new ArrayList<>();
         try (Connection conn = DBconexion.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Establecer los parámetros de la consulta si existen
             for (int i = 0; i < params.length; i++) {
                 if (params[i] instanceof String) {
                     stmt.setString(i + 1, (String) params[i]);
@@ -32,19 +33,18 @@ public class PedidosUtils {
                             rs.getString("estado_pedido"),
                             rs.getString("observaciones"),
                             rs.getDouble("precio_total"),
-                            cargarCliente(rs.getInt("id_cliente")),  // Obtener el cliente con su ID
+                            cargarCliente(rs.getInt("id_cliente")),
                             rs.getTimestamp("fecha_pedido")
                     );
                     listaPedidos.add(pedido);
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error al cargar pedidos", e);
         }
         return listaPedidos;
     }
 
-    // Cargar los detalles de un pedido
     public static List<DetallePedido> cargarDetallesPedido(int idPedido) {
         List<DetallePedido> detalles = new ArrayList<>();
         String sql = "SELECT * FROM detalles_pedido WHERE id_pedido = ?";
@@ -67,38 +67,45 @@ public class PedidosUtils {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error al cargar detalles del pedido", e);
         }
         return detalles;
     }
-
-    // Guardar un pedido en la base de datos
     public static void guardarPedido(Pedidos pedido) {
-        String sql = "INSERT INTO pedidos (estado_pedido, observaciones, precio_total, cliente, fecha_pedido) VALUES (?, ?, ?, ?, ?)";
+        // Calcular total de detalles del pedido
+        double totalPedido = pedido.getDetalles().stream()
+            .mapToDouble(detalle -> detalle.getCantidad() * detalle.getPrecioUnitario())
+            .sum();
+        pedido.setPrecioTotal(totalPedido);
+     
+        // Establecer timestamp actual
+        pedido.setFechaPedido(new Timestamp(System.currentTimeMillis()));
+     
+        String sql = "INSERT INTO pedidos (estado_pedido, observaciones, precio_total, id_cliente, fecha_pedido) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBconexion.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
+     
             stmt.setString(1, pedido.getEstadoPedido());
             stmt.setString(2, pedido.getObservaciones());
-            stmt.setDouble(3, pedido.getPrecioTotal());
-            stmt.setInt(4, pedido.getCliente().getId()); // Usamos el ID del cliente
+            stmt.setDouble(3, totalPedido);  // Usar totalPedido directamente
+            stmt.setInt(4, pedido.getCliente().getId());
             stmt.setTimestamp(5, pedido.getFechaPedido());
-
+     
             int affectedRows = stmt.executeUpdate();
             if (affectedRows > 0) {
                 try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         int idPedido = generatedKeys.getInt(1);
-                        pedido.setIdPedido(idPedido); // Establecer el ID generado
+                        pedido.setIdPedido(idPedido);
                     }
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error al guardar pedido", e);
         }
-    }
+        
+     }
 
-    // Eliminar un pedido de la base de datos
     public static void eliminarPedido(int idPedido) {
         String sql = "DELETE FROM pedidos WHERE id_pedido = ?";
         try (Connection conn = DBconexion.getConnection();
@@ -107,11 +114,10 @@ public class PedidosUtils {
             stmt.setInt(1, idPedido);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error al eliminar pedido", e);
         }
     }
 
-    // Guardar los detalles de un pedido
     public static void guardarDetallesPedido(Pedidos pedido) {
         String sql = "INSERT INTO detalles_pedido (id_pedido, id_conexion, cantidad, precio_unitario) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBconexion.getConnection();
@@ -127,11 +133,10 @@ public class PedidosUtils {
 
             stmt.executeBatch();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error al guardar detalles del pedido", e);
         }
     }
 
-    // Eliminar los detalles de un pedido
     public static void eliminarDetallesPedido(int idPedido) {
         String sql = "DELETE FROM detalles_pedido WHERE id_pedido = ?";
         try (Connection conn = DBconexion.getConnection();
@@ -140,22 +145,21 @@ public class PedidosUtils {
             stmt.setInt(1, idPedido);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error al eliminar detalles del pedido", e);
         }
     }
-    
-    // Cargar cliente con su ID
+
     private static Cliente cargarCliente(int idCliente) {
         Cliente cliente = null;
-        String sql = "SELECT * FROM clientes WHERE id_cliente = ?";
+        String sql = "SELECT * FROM clientes WHERE id = ?";
         try (Connection conn = DBconexion.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+
             stmt.setInt(1, idCliente);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     cliente = new Cliente(
-                            rs.getInt("id_cliente"),
+                            rs.getInt("id"),
                             rs.getString("nombre"),
                             rs.getString("direccion"),
                             rs.getString("telefono"),
@@ -165,7 +169,7 @@ public class PedidosUtils {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error al cargar cliente", e);
         }
         return cliente;
     }

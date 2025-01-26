@@ -10,9 +10,8 @@ import com.owl.Utils.ConexionesUtils;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.*;
+import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 
@@ -22,9 +21,9 @@ import java.util.List;
 public class PedidosController {
 
     @FXML
-private ComboBox<String> estadoComboBox;  // ComboBox para el estado del pedido
-@FXML
-private ComboBox<Cliente> clienteComboBox;
+    private ComboBox<String> estadoComboBox;  // ComboBox para el estado del pedido
+    @FXML
+    private ComboBox<Cliente> clienteComboBox;
 
     @FXML
     private TableView<Pedidos> pedidosTableView;
@@ -62,6 +61,7 @@ private ComboBox<Cliente> clienteComboBox;
 
     private Pedidos pedidoActual;
 
+    @FXML
     public void initialize() {
         // Configurar las columnas de la tabla de pedidos
         idPedidoColumn.setCellValueFactory(new PropertyValueFactory<>("idPedido"));
@@ -80,11 +80,11 @@ private ComboBox<Cliente> clienteComboBox;
         // Cargar los pedidos al inicializar
         cargarPedidos();
 
-            // Cargar los estados al ComboBox de Estado
-    cargarEstados();
+        // Cargar los estados al ComboBox de Estado
+        cargarEstados();
 
-    // Cargar los clientes al ComboBox de Cliente
-    cargarClientes();
+        // Cargar los clientes al ComboBox de Cliente
+        cargarClientes();
 
         // Listener para mostrar los detalles del pedido seleccionado
         pedidosTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldPedido, newPedido) -> {
@@ -96,168 +96,211 @@ private ComboBox<Cliente> clienteComboBox;
         // Inicializar un pedido vacío
         pedidoActual = new Pedidos();
     }
-// Método para cargar los estados
-private void cargarEstados() {
-    // Aquí puedes cargar los estados manualmente o desde la base de datos.
-    List<String> estados = List.of("Pendiente", "En Proceso", "Completado");
 
-    // Cargar los valores en el ComboBox de estado
-    estadoComboBox.setItems(FXCollections.observableArrayList(estados));
+    // Método para cargar los estados
+    private void cargarEstados() {
+        List<String> estados = List.of("Pendiente", "En Proceso", "Completado");
+        estadoComboBox.setItems(FXCollections.observableArrayList(estados));
+        estadoComboBox.getSelectionModel().selectFirst();  // Selecciona el primer estado
+    }
 
-    // Establecer un valor predeterminado si es necesario
-    estadoComboBox.getSelectionModel().selectFirst();  // Selecciona el primer estado
-}
+    // Método para cargar los clientes
+    private void cargarClientes() {
+        try {
+            List<Cliente> clientes = ClientesUtils.cargarClientes("SELECT * FROM clientes");
+            clienteComboBox.setItems(FXCollections.observableArrayList(clientes));
+            clienteComboBox.getSelectionModel().selectFirst();  // Selecciona el primer cliente
+        } catch (Exception e) {
+            mostrarError("Error al cargar los clientes: " + e.getMessage());
+        }
+    }
 
-// Método para cargar los clientes
-private void cargarClientes() {
-    // Obtener la lista de clientes desde la base de datos
-    List<Cliente> clientes = ClientesUtils.cargarClientes("SELECT * FROM clientes");
-
-    // Cargar los valores en el ComboBox de clientes
-    clienteComboBox.setItems(FXCollections.observableArrayList(clientes));
-
-    // Establecer un valor predeterminado si es necesario
-    clienteComboBox.getSelectionModel().selectFirst();  // Selecciona el primer cliente
-}
+    // Método para cargar los pedidos
     private void cargarPedidos() {
-        List<Pedidos> pedidos = PedidosUtils.cargarPedidos("SELECT * FROM pedidos");
-        for (Pedidos pedido : pedidos) {
-            // Asegurarse de que el cliente se cargue correctamente
-            Cliente cliente = ClientesUtils.obtenerClientePorId(pedido.getCliente().getId());
-            pedido.setCliente(cliente);
+        try {
+            List<Pedidos> pedidos = PedidosUtils.cargarPedidos("SELECT * FROM pedidos");
+            pedidosTableView.setItems(FXCollections.observableArrayList(pedidos));
+        } catch (Exception e) {
+            mostrarError("Error al cargar los pedidos: " + e.getMessage());
         }
-        pedidosTableView.setItems(FXCollections.observableArrayList(pedidos));
     }
 
+    // Método para mostrar los detalles de un pedido
     private void mostrarDetallesPedido(Pedidos pedido) {
-        pedidoActual = pedido;
-        List<DetallePedido> detalles = PedidosUtils.cargarDetallesPedido(pedido.getIdPedido());
+        try {
+            pedidoActual = pedido;
+            List<DetallePedido> detalles = PedidosUtils.cargarDetallesPedido(pedido.getIdPedido());
 
-        for (DetallePedido detalle : detalles) {
-            Conexiones conexion = ConexionesUtils.obtenerConexionPorId(detalle.getIdConexion());
-            if (conexion != null) {
-                detalle.setNombreConexion(conexion.getNombreConexion()); 
+            for (DetallePedido detalle : detalles) {
+                Conexiones conexion = ConexionesUtils.obtenerConexionPorId(detalle.getIdConexion());
+                if (conexion != null) {
+                    detalle.setNombreConexion(conexion.getNombreConexion());
+                }
             }
-        }
 
-        detallesPedidoTableView.setItems(FXCollections.observableArrayList(detalles));
-        recalcularTotalPedido();
+            detallesPedidoTableView.setItems(FXCollections.observableArrayList(detalles));
+            recalcularTotalPedido();
+        } catch (Exception e) {
+            mostrarError("Error al cargar los detalles del pedido: " + e.getMessage());
+        }
     }
 
+    // Método para recalcular el total del pedido
     private void recalcularTotalPedido() {
-        double total = pedidoActual.getDetalles().stream()
+        double total = detallesPedidoTableView.getItems().stream()
                 .mapToDouble(DetallePedido::getTotal)
                 .sum();
         totalPedidoField.setText(String.format("%.2f", total));
     }
 
+    // Método para agregar una conexión al pedido
     @FXML
     public void agregarConexion() {
-        // Crear el Dialog (ventana emergente)
-        Dialog<DetallePedido> dialog = new Dialog<>();
-        dialog.setTitle("Seleccionar Conexión");
-        dialog.setHeaderText("Seleccione una conexión y agregue la cantidad.");
+        try {
+            // Crear el diálogo para seleccionar una conexión
+            Dialog<DetallePedido> dialog = new Dialog<>();
+            dialog.setTitle("Seleccionar Conexión");
+            dialog.setHeaderText("Seleccione una conexión y agregue la cantidad.");
 
-        // Crear el contenedor principal del diálogo
-        VBox dialogVbox = new VBox(10);
-        
-        // Cargar las conexiones desde la base de datos
-        List<Conexiones> listaConexiones = ConexionesUtils.cargarConexiones("SELECT * FROM conexiones");
+            // Crear el contenedor principal del diálogo
+            VBox dialogVbox = new VBox(10);
 
-        // Crear un TableView para mostrar las conexiones
-        TableView<Conexiones> conexionTableView = new TableView<>();
-        TableColumn<Conexiones, String> nombreColumn = new TableColumn<>("Nombre de la Conexión");
-        nombreColumn.setCellValueFactory(new PropertyValueFactory<>("nombreConexion"));
-        conexionTableView.getColumns().add(nombreColumn);
-        conexionTableView.setItems(FXCollections.observableArrayList(listaConexiones));
-        
-        // Campo para la cantidad
-        TextField cantidadField = new TextField();
-        cantidadField.setPromptText("Cantidad");
+            // Cargar las conexiones desde la base de datos
+            List<Conexiones> listaConexiones = ConexionesUtils.cargarConexiones("SELECT * FROM conexiones");
 
-        // Añadir la tabla de conexiones y el campo de cantidad al VBox
-        dialogVbox.getChildren().addAll(conexionTableView, cantidadField);
+            // Crear un TableView para mostrar las conexiones
+            TableView<Conexiones> conexionTableView = new TableView<>();
+            TableColumn<Conexiones, String> nombreColumn = new TableColumn<>("Nombre de la Conexión");
+            nombreColumn.setCellValueFactory(new PropertyValueFactory<>("nombreConexion"));
+            conexionTableView.getColumns().add(nombreColumn);
+            conexionTableView.setItems(FXCollections.observableArrayList(listaConexiones));
 
-        // Botones del diálogo
-        ButtonType okButtonType = new ButtonType("Agregar", ButtonBar.ButtonData.OK_DONE);
-        ButtonType cancelButtonType = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
-        dialog.getDialogPane().getButtonTypes().addAll(okButtonType, cancelButtonType);
-        dialog.getDialogPane().setContent(dialogVbox);
+            // Campo para la cantidad
+            TextField cantidadField = new TextField();
+            cantidadField.setPromptText("Cantidad");
 
-        // Convertir el resultado del diálogo en un detalle de pedido
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == okButtonType) {
-                Conexiones conexionSeleccionada = conexionTableView.getSelectionModel().getSelectedItem();
-                String cantidadTexto = cantidadField.getText();
+            // Añadir la tabla de conexiones y el campo de cantidad al VBox
+            dialogVbox.getChildren().addAll(conexionTableView, cantidadField);
 
-                if (conexionSeleccionada != null && !cantidadTexto.isEmpty()) {
-                    try {
-                        int cantidad = Integer.parseInt(cantidadTexto);
+            // Botones del diálogo
+            ButtonType okButtonType = new ButtonType("Agregar", ButtonBar.ButtonData.OK_DONE);
+            ButtonType cancelButtonType = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+            dialog.getDialogPane().getButtonTypes().addAll(okButtonType, cancelButtonType);
+            dialog.getDialogPane().setContent(dialogVbox);
 
-                        // Crear un nuevo detalle de pedido
-                        DetallePedido detalle = new DetallePedido(
-                                0, // ID temporal
-                                pedidoActual.getIdPedido(),
-                                conexionSeleccionada.getId(),
-                                cantidad,
-                                conexionSeleccionada.getPrecio()
-                        );
-                        detalle.setNombreConexion(conexionSeleccionada.getNombreConexion());  // Asignamos el nombre de la conexión
-                        detalle.calcularTotal();
+            // Convertir el resultado del diálogo en un detalle de pedido
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == okButtonType) {
+                    Conexiones conexionSeleccionada = conexionTableView.getSelectionModel().getSelectedItem();
+                    String cantidadTexto = cantidadField.getText();
 
-                        return detalle;
-                    } catch (NumberFormatException e) {
-                        mostrarError("Por favor ingresa una cantidad válida.");
+                    if (conexionSeleccionada != null && !cantidadTexto.isEmpty()) {
+                        try {
+                            int cantidad = Integer.parseInt(cantidadTexto);
+
+                            // Crear un nuevo detalle de pedido
+                            DetallePedido detalle = new DetallePedido(
+                                    0, // ID temporal
+                                    pedidoActual.getIdPedido(),
+                                    conexionSeleccionada.getId(),
+                                    cantidad,
+                                    conexionSeleccionada.getPrecio()
+                            );
+                            detalle.setNombreConexion(conexionSeleccionada.getNombreConexion());
+                            detalle.calcularTotal();
+
+                            return detalle;
+                        } catch (NumberFormatException e) {
+                            mostrarError("Por favor ingresa una cantidad válida.");
+                        }
+                    } else {
+                        mostrarError("Debe seleccionar una conexión y una cantidad.");
                     }
-                } else {
-                    mostrarError("Debe seleccionar una conexión y una cantidad.");
                 }
-            }
-            return null;
-        });
+                return null;
+            });
 
-        // Mostrar el diálogo y esperar por el resultado
-        dialog.showAndWait().ifPresent(detallePedido -> {
-            if (detallePedido != null) {
-                // Agregar el detalle al pedido actual
-                detallesPedidoTableView.getItems().add(detallePedido);
-                recalcularTotalPedido();
-            }
-        });
+            // Mostrar el diálogo y esperar por el resultado
+            dialog.showAndWait().ifPresent(detallePedido -> {
+                if (detallePedido != null) {
+                    detallesPedidoTableView.getItems().add(detallePedido);
+                    recalcularTotalPedido();
+                }
+            });
+        } catch (Exception e) {
+            mostrarError("Error al agregar la conexión: " + e.getMessage());
+        }
     }
 
+    // Método para guardar un pedido
     @FXML
     public void guardarPedido() {
-        if (pedidoActual.getDetalles().isEmpty()) {
-            mostrarError("El pedido no tiene detalles.");
-            return;
+        try {
+            if (detallesPedidoTableView.getItems().isEmpty()) {
+                mostrarError("El pedido no tiene detalles.");
+                return;
+            }
+    
+            // Calculate total from details
+            double totalPedido = detallesPedidoTableView.getItems().stream()
+                .mapToDouble(detalle -> detalle.getCantidad() * detalle.getPrecioUnitario())
+                .sum();
+    
+            // Set current timestamp
+            Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
+    
+            // Crear una copia de los detalles para el pedido
+            pedidoActual.setDetalles(detallesPedidoTableView.getItems());
+    
+            // Asignar el cliente, estado, total y fecha al pedido
+            pedidoActual.setCliente(clienteComboBox.getValue());
+            pedidoActual.setEstadoPedido(estadoComboBox.getValue());
+            pedidoActual.setPrecioTotal(totalPedido);
+            pedidoActual.setFechaPedido(fechaActual);
+    
+            // Guardar el pedido y los detalles
+            PedidosUtils.guardarPedido(pedidoActual);
+            PedidosUtils.guardarDetallesPedido(pedidoActual);
+            detallesPedidoTableView.getItems().clear();
+            totalPedidoField.clear();
+    
+            mostrarExito("Pedido guardado con éxito.");
+            cargarPedidos();  // Recargar la lista de pedidos
+        } catch (Exception e) {
+            mostrarError("Error al guardar el pedido: " + e.getMessage());
         }
-
-        // Guardar el pedido en la base de datos
-        PedidosUtils.guardarPedido(pedidoActual);
-        
-        // Guardar los detalles del pedido en la base de datos
-        PedidosUtils.guardarDetallesPedido(pedidoActual);
-        
-        // Recargar los pedidos después de guardar
-        cargarPedidos();
     }
 
+    // Método para eliminar un pedido
     @FXML
     public void eliminarPedido() {
-        Pedidos pedidoSeleccionado = pedidosTableView.getSelectionModel().getSelectedItem();
-        if (pedidoSeleccionado != null) {
-            PedidosUtils.eliminarPedido(pedidoSeleccionado.getIdPedido());
-            PedidosUtils.eliminarDetallesPedido(pedidoSeleccionado.getIdPedido());
-            cargarPedidos();  // Recargar la lista de pedidos
-        } else {
-            mostrarError("Debe seleccionar un pedido para eliminar.");
+        try {
+            Pedidos pedidoSeleccionado = pedidosTableView.getSelectionModel().getSelectedItem();
+            if (pedidoSeleccionado != null) {
+                PedidosUtils.eliminarPedido(pedidoSeleccionado.getIdPedido());
+                mostrarExito("Pedido eliminado con éxito.");
+                cargarPedidos();  // Recargar la lista de pedidos
+            } else {
+                mostrarError("Debe seleccionar un pedido para eliminar.");
+            }
+        } catch (Exception e) {
+            mostrarError("Error al eliminar el pedido: " + e.getMessage());
         }
     }
 
+    // Método para mostrar un mensaje de error
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
+    // Método para mostrar un mensaje de éxito
+    private void mostrarExito(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Éxito");
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();

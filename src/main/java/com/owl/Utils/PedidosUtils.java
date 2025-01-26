@@ -106,15 +106,26 @@ public class PedidosUtils {
         
      }
 
-    public static void eliminarPedido(int idPedido) {
-        String sql = "DELETE FROM pedidos WHERE id_pedido = ?";
+     public static void eliminarPedido(int idPedido) {
+        // Primero, eliminar los detalles del pedido
+        String queryDetalles = "DELETE FROM DETALLES_PEDIDO WHERE ID_PEDIDO = ?";
+        // Luego, eliminar el pedido
+        String queryPedido = "DELETE FROM PEDIDOS WHERE ID_PEDIDO = ?";
+    
         try (Connection conn = DBconexion.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, idPedido);
-            stmt.executeUpdate();
+             PreparedStatement stmtDetalles = conn.prepareStatement(queryDetalles);
+             PreparedStatement stmtPedido = conn.prepareStatement(queryPedido)) {
+    
+            // Eliminar detalles del pedido
+            stmtDetalles.setInt(1, idPedido);
+            stmtDetalles.executeUpdate();
+    
+            // Eliminar el pedido
+            stmtPedido.setInt(1, idPedido);
+            stmtPedido.executeUpdate();
+    
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error al eliminar pedido", e);
+            e.printStackTrace();
         }
     }
 

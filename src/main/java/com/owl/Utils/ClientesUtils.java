@@ -16,21 +16,6 @@ public class ClientesUtils {
         return DBconexion.getConnection(); // Asegúrate de que DBconexion esté configurado correctamente
     }
 
-    // Método genérico para ejecutar una consulta SQL sin esperar resultados
-    private static void ejecutarConsulta(String query, Object... parametros) throws SQLException {
-        try (Connection connection = obtenerConexion();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            // Establecer los parámetros de la consulta
-            for (int i = 0; i < parametros.length; i++) {
-                statement.setObject(i + 1, parametros[i]);
-            }
-
-            // Ejecutar la actualización (INSERT, UPDATE, DELETE)
-            statement.executeUpdate();
-        }
-    }
-
     // Método para obtener un cliente por su ID
     public static Cliente obtenerClientePorId(int id) {
         Cliente cliente = null;

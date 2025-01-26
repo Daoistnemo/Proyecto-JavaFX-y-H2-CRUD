@@ -11,8 +11,6 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 
 import java.sql.Timestamp;
@@ -77,6 +75,8 @@ public class PedidosController {
         cantidadColumn.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         precioUnitarioColumn.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
         subtotalColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
+
+        
         
 
         // Cargar los pedidos al inicializar
@@ -87,12 +87,14 @@ public class PedidosController {
 
         // Cargar los clientes al ComboBox de Cliente
         cargarClientes();
+        
 
         // Listener para mostrar los detalles del pedido seleccionado
         pedidosTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldPedido, newPedido) -> {
             if (newPedido != null) {
                 mostrarDetallesPedido(newPedido);
             }
+        
         });
 
         // Inicializar un pedido vacío
@@ -282,6 +284,8 @@ public class PedidosController {
                 PedidosUtils.eliminarPedido(pedidoSeleccionado.getIdPedido());
                 mostrarExito("Pedido eliminado con éxito.");
                 cargarPedidos();  // Recargar la lista de pedidos
+                pedidosTableView.refresh();
+
             } else {
                 mostrarError("Debe seleccionar un pedido para eliminar.");
             }

@@ -2,12 +2,9 @@ package com.owl.Controllers;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.Region;
-
 import com.owl.Models.Conexiones;
 import com.owl.Utils.ConexionesUtils;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ConexionSelectionDialog {

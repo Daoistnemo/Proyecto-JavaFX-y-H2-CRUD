@@ -111,16 +111,26 @@ public class ConexionesUtils {
         alerta.showAndWait();
     }
 
-    // Método para eliminar una conexión
     public static void eliminarConexion(int id) {
-        String query = "DELETE FROM CONEXIONES WHERE ID = ?";
-        try {
-            ejecutarConsulta(query, id);
+        String queryDetalles = "DELETE FROM DETALLES_PEDIDO WHERE ID_CONEXION = ?";
+        String queryConexion = "DELETE FROM CONEXIONES WHERE ID = ?";
+        try (Connection conn = obtenerConexion();
+             PreparedStatement pstmtDetalles = conn.prepareStatement(queryDetalles);
+             PreparedStatement pstmtConexion = conn.prepareStatement(queryConexion)) {
+    
+            // Eliminar registros dependientes en DETALLES_PEDIDO
+            pstmtDetalles.setInt(1, id);
+            pstmtDetalles.executeUpdate();
+    
+            // Eliminar el registro en CONEXIONES
+            pstmtConexion.setInt(1, id);
+            pstmtConexion.executeUpdate();
+    
         } catch (SQLException e) {
-            mostrarAlerta("Error al eliminar conexión", e.getMessage(), Alert.AlertType.ERROR);
+            System.err.println("Error al eliminar conexión: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-
     // Método para agregar una nueva conexión y obtener el ID generado
     public static int agregarConexion(Conexiones conexion) {
         if (existeConexionPorNombre(conexion.getNombreConexion())) {

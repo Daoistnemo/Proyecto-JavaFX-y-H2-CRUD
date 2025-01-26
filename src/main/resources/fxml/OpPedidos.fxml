@@ -8,9 +8,11 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="567.0" prefWidth="722.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.owl.Controllers.PedidosController">
+<AnchorPane prefHeight="567.0" prefWidth="722.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.owl.Controllers.PedidosController">
     <children>
         <!-- Título para la sección de pedidos -->
         <Label layoutX="10" layoutY="10" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Gestión de Pedidos" />
@@ -65,10 +67,43 @@
         <Label layoutX="250.0" layoutY="297.0" text="Fecha Fin:" />
         <DatePicker fx:id="fechaFinDatePicker" layoutX="312.0" layoutY="293.0" prefWidth="150" />
 
+        <!-- Botón Agregar Conexión (con imagen) -->
+        <Button layoutX="468.0" layoutY="288.0" minWidth="45.0" onAction="#agregarConexion" prefHeight="30.0" prefWidth="45.0">
+            <graphic>
+                <ImageView fitHeight="20.0" fitWidth="20.0">
+                    <image>
+                        <Image url="@../images/icons/add.png" /> <!-- Ruta relativa de la imagen -->
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <!-- Botón Eliminar Conexión (con imagen) -->
+        <Button layoutX="520.0" layoutY="288.0" minWidth="45.0" onAction="#eliminarConexion" prefHeight="30.0" prefWidth="45.0">
+            <graphic>
+                <ImageView fitHeight="20.0" fitWidth="20.0">
+                    <image>
+                        <Image url="@../images/icons/delete.png" /> <!-- Ruta relativa de la imagen -->
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <!-- Botón Imprimir Boleta (con imagen) -->
+        <Button layoutX="572.0" layoutY="288.0" minWidth="45.0" onAction="#imprimirBoleta" prefHeight="30.0" prefWidth="45.0">
+            <graphic>
+                <ImageView fitHeight="20.0" fitWidth="20.0">
+                    <image>
+                        <Image url="@../images/icons/print.png" /> <!-- Ruta relativa de la imagen -->
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
         <!-- Tabla de Detalles de Pedido -->
-        <TableView fx:id="detallesPedidoTableView" layoutX="10.0" layoutY="323.0" prefHeight="200" prefWidth="583.0">
+        <TableView fx:id="detallesPedidoTableView" editable="true" layoutX="10.0" layoutY="323.0" prefHeight="200" prefWidth="584.0">
             <columns>
-                <TableColumn fx:id="conexionColumn" prefWidth="150" text="Conexión">
+                <TableColumn fx:id="conexionColumn" prefWidth="150" text="Conexión" editable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="nombreConexion" />
                     </cellValueFactory>
@@ -83,7 +118,7 @@
                         <PropertyValueFactory property="precioUnitario" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn fx:id="subtotalColumn" prefWidth="100" text="Subtotal">
+                <TableColumn fx:id="subtotalColumn" prefWidth="100" text="Subtotal" editable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="total" />
                     </cellValueFactory>
@@ -96,8 +131,7 @@
         <TextField fx:id="totalPedidoField" editable="false" layoutX="552.0" layoutY="528.0" prefWidth="150" />
 
         <!-- Botones con etiquetas -->
-        <Button layoutX="569.0" layoutY="220.0" onAction="#agregarConexion" text="Agregar Conexión" AnchorPane.rightAnchor="2.0" />
-        <Button layoutX="569.0" layoutY="260.0" onAction="#guardarPedido" text="Guardar Pedido" AnchorPane.rightAnchor="2.0" />
-        <Button layoutX="569.0" layoutY="300.0" onAction="#eliminarPedido" text="Eliminar Pedido" AnchorPane.rightAnchor="2.0" />
+        <Button layoutX="607.0" layoutY="486.0" onAction="#guardarPedido" text="Guardar Pedido" AnchorPane.rightAnchor="9.0" />
+        <Button layoutX="592.0" layoutY="107.0" onAction="#eliminarPedido" text="Eliminar Pedido" AnchorPane.rightAnchor="9.0" />
     </children>
 </AnchorPane>

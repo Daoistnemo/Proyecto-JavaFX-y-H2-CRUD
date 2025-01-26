@@ -11,7 +11,10 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
+import javafx.util.converter.DoubleStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -62,7 +65,6 @@ public class PedidosController {
     @FXML
     public void initialize() {
         // Configurar las columnas de la tabla de pedidos
-        
         idPedidoColumn.setCellValueFactory(new PropertyValueFactory<>("idPedido"));
         estadoPedidoColumn.setCellValueFactory(new PropertyValueFactory<>("estadoPedido"));
         observacionesColumn.setCellValueFactory(new PropertyValueFactory<>("observaciones"));
@@ -76,8 +78,28 @@ public class PedidosController {
         precioUnitarioColumn.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
         subtotalColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
 
-        
-        
+        // Habilitar la edición en la tabla de detalles
+        detallesPedidoTableView.setEditable(true);
+
+        // Configurar la columna "Cantidad" como editable
+        cantidadColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        cantidadColumn.setOnEditCommit(event -> {
+            DetallePedido detalle = event.getRowValue();
+            detalle.setCantidad(event.getNewValue());
+            detalle.calcularTotal(); // Recalcular el subtotal
+            detallesPedidoTableView.refresh(); // Actualizar la tabla
+            recalcularTotalPedido(); // Recalcular el total del pedido
+        });
+
+        // Configurar la columna "Precio Unitario" como editable
+        precioUnitarioColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+        precioUnitarioColumn.setOnEditCommit(event -> {
+            DetallePedido detalle = event.getRowValue();
+            detalle.setPrecioUnitario(event.getNewValue());
+            detalle.calcularTotal(); // Recalcular el subtotal
+            detallesPedidoTableView.refresh(); // Actualizar la tabla
+            recalcularTotalPedido(); // Recalcular el total del pedido
+        });
 
         // Cargar los pedidos al inicializar
         cargarPedidos();
@@ -87,14 +109,12 @@ public class PedidosController {
 
         // Cargar los clientes al ComboBox de Cliente
         cargarClientes();
-        
 
         // Listener para mostrar los detalles del pedido seleccionado
         pedidosTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldPedido, newPedido) -> {
             if (newPedido != null) {
                 mostrarDetallesPedido(newPedido);
             }
-        
         });
 
         // Inicializar un pedido vacío
@@ -244,30 +264,30 @@ public class PedidosController {
                 mostrarError("El pedido no tiene detalles.");
                 return;
             }
-    
-            // Calculate total from details
+
+            // Calcular el total del pedido
             double totalPedido = detallesPedidoTableView.getItems().stream()
-                .mapToDouble(detalle -> detalle.getCantidad() * detalle.getPrecioUnitario())
-                .sum();
-    
-            // Set current timestamp
+                    .mapToDouble(detalle -> detalle.getCantidad() * detalle.getPrecioUnitario())
+                    .sum();
+
+            // Establecer la fecha actual
             Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
-    
-            // Crear una copia de los detalles para el pedido
+
+            // Asignar los detalles al pedido actual
             pedidoActual.setDetalles(detallesPedidoTableView.getItems());
-    
+
             // Asignar el cliente, estado, total y fecha al pedido
             pedidoActual.setCliente(clienteComboBox.getValue());
             pedidoActual.setEstadoPedido(estadoComboBox.getValue());
             pedidoActual.setPrecioTotal(totalPedido);
             pedidoActual.setFechaPedido(fechaActual);
-    
+
             // Guardar el pedido y los detalles
             PedidosUtils.guardarPedido(pedidoActual);
             PedidosUtils.guardarDetallesPedido(pedidoActual);
             detallesPedidoTableView.getItems().clear();
-        totalPedidoField.clear();
-    
+            totalPedidoField.clear();
+
             mostrarExito("Pedido guardado con éxito.");
             cargarPedidos();  // Recargar la lista de pedidos
         } catch (Exception e) {
@@ -284,7 +304,7 @@ public class PedidosController {
                 PedidosUtils.eliminarPedido(pedidoSeleccionado.getIdPedido());
                 mostrarExito("Pedido eliminado con éxito.");
                 cargarPedidos();  // Recargar la lista de pedidos
-                pedidosTableView.refresh();
+                detallesPedidoTableView.getItems().clear();
 
             } else {
                 mostrarError("Debe seleccionar un pedido para eliminar.");
@@ -310,5 +330,31 @@ public class PedidosController {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+
+    @FXML
+    public void imprimirBoleta() {
+        // Lógica para imprimir la boleta
+        System.out.println("Imprimir boleta...");
+    }
+
+    @FXML
+    public void eliminarConexion() {
+        // Obtener la conexión seleccionada en la tabla de detalles
+        DetallePedido selectedDetalle = detallesPedidoTableView.getSelectionModel().getSelectedItem();
+
+        if (selectedDetalle != null) {
+            // Eliminar la conexión de la lista de detalles
+            detallesPedidoTableView.getItems().remove(selectedDetalle);
+
+            // Recalcular el total del pedido
+            recalcularTotalPedido();
+
+            // Mostrar mensaje de éxito
+            mostrarExito("Conexión eliminada correctamente.");
+        } else {
+            // Mostrar mensaje de error si no se selecciona una conexión
+            mostrarError("Debe seleccionar una conexión para eliminar.");
+        }
     }
 }

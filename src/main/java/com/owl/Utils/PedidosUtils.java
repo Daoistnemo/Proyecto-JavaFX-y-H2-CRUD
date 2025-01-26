@@ -123,6 +123,7 @@ public class PedidosUtils {
             // Eliminar el pedido
             stmtPedido.setInt(1, idPedido);
             stmtPedido.executeUpdate();
+            
     
         } catch (SQLException e) {
             e.printStackTrace();

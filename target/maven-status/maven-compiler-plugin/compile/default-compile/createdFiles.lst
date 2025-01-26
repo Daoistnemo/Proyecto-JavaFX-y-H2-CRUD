@@ -23,6 +23,7 @@ com\owl\Controllers\ConexionesController.class
 com\owl\Utils\ClientesUtils.class
 com\owl\Controllers\ClienteDialog.class
 com\owl\Controllers\PedidoDialog$1.class
+com\owl\Utils\BoletaUtils.class
 com\owl\Utils\ClientesUtils$2.class
 com\owl\Utils\H2DatabaseMigration.class
 com\owl\Controllers\OpConexionesController.class

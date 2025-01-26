@@ -5,6 +5,7 @@ import com.owl.Models.DetallePedido;
 import com.owl.Models.Pedidos;
 import com.owl.Models.Conexiones;
 import com.owl.Utils.PedidosUtils;
+import com.owl.Utils.BoletaUtils;
 import com.owl.Utils.ClientesUtils;
 import com.owl.Utils.ConexionesUtils;
 import javafx.collections.FXCollections;
@@ -332,11 +333,23 @@ public class PedidosController {
         alert.showAndWait();
     }
 
-    @FXML
-    public void imprimirBoleta() {
-        // Lógica para imprimir la boleta
-        System.out.println("Imprimir boleta...");
-    }
+   @FXML
+public void imprimirBoleta() {
+    // Obtener el pedido actual
+    Pedidos pedido = pedidoActual;
+
+    // Obtener los detalles del pedido desde la tabla
+    List<DetallePedido> detalles = detallesPedidoTableView.getItems();
+
+    // Ruta donde se guardará el PDF generado
+    String outputPath = "merlin\\src\\main\\resources\\boleta1.pdf";
+
+    // Generar la boleta
+    BoletaUtils.generarBoleta(pedido, detalles, outputPath);
+
+    // Mostrar mensaje de éxito
+    mostrarExito("Boleta generada correctamente en: " + outputPath);
+}
 
     @FXML
     public void eliminarConexion() {

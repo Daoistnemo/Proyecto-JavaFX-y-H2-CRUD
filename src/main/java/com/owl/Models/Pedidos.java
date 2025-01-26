@@ -1,21 +1,21 @@
 package com.owl.Models;
 
-
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Pedidos {
+
     private int idPedido;
     private String estadoPedido;
     private String observaciones;
     private double precioTotal;
-    private String cliente;
+    private Cliente cliente;
     private Timestamp fechaPedido;
+    private List<DetallePedido> detalles;  // Add the detalles field
 
-    // Constructor vacío
-    public Pedidos() {}
-
-    // Constructor con todos los atributos
-    public Pedidos(int idPedido, String estadoPedido, String observaciones, double precioTotal, String cliente, Timestamp fechaPedido) {
+    // Constructor con parámetros
+    public Pedidos(int idPedido, String estadoPedido, String observaciones, double precioTotal, Cliente cliente, Timestamp fechaPedido) {
         this.idPedido = idPedido;
         this.estadoPedido = estadoPedido;
         this.observaciones = observaciones;
@@ -24,8 +24,12 @@ public class Pedidos {
         this.fechaPedido = fechaPedido;
     }
 
-    // Getters y Setters
+        // Constructor sin parámetros
+        public Pedidos() {
+            this.detalles = new ArrayList<>();
+        }
 
+    // Getters y setters para los demás campos
     public int getIdPedido() {
         return idPedido;
     }
@@ -58,11 +62,11 @@ public class Pedidos {
         this.precioTotal = precioTotal;
     }
 
-    public String getCliente() {
+    public Cliente getCliente() {
         return cliente;
     }
 
-    public void setCliente(String cliente) {
+    public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
@@ -74,15 +78,19 @@ public class Pedidos {
         this.fechaPedido = fechaPedido;
     }
 
-    @Override
-    public String toString() {
-        return "Pedido{" +
-                "idPedido=" + idPedido +
-                ", estadoPedido='" + estadoPedido + '\'' +
-                ", observaciones='" + observaciones + '\'' +
-                ", precioTotal=" + precioTotal +
-                ", cliente='" + cliente + '\'' +
-                ", fechaPedido=" + fechaPedido +
-                '}';
+    // Getter y setter para detalles
+    public List<DetallePedido> getDetalles() {
+        return detalles;
     }
+
+    public void setDetalles(List<DetallePedido> detalles) {
+        this.detalles = detalles;
+    }
+    
+    public void agregarDetalle(DetallePedido detalle) {
+    if (this.detalles == null) {
+        this.detalles = new ArrayList<>();
+    }
+    this.detalles.add(detalle);
+}
 }

@@ -1,35 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-image: url(&quot;/images/opcion1.jpg&quot;); -fx-background-position: center center; -fx-background-size: cover;" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.owl.Controllers.OpPedidosController">
-   <children>
-      <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <Button layoutX="140.0" layoutY="99.0" mnemonicParsing="false" text="Agregar Pedido" />
-      <Button layoutX="142.0" layoutY="219.0" mnemonicParsing="false" text="Revisar Pedidos" />
-      <Button layoutX="128.0" layoutY="275.0" mnemonicParsing="false" text="Historial de Pedidos" />
-      <Button layoutX="140.0" layoutY="158.0" mnemonicParsing="false" text="Cancelar Pedido" />
-   </children>
+<AnchorPane prefHeight="567.0" prefWidth="722.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.owl.Controllers.PedidosController">
+    <children>
+        <!-- Título para la sección de pedidos -->
+        <Label layoutX="10" layoutY="10" style="-fx-font-size: 16; -fx-font-weight: bold;" text="Gestión de Pedidos" />
+
+        <!-- Tabla de Pedidos -->
+        <TableView fx:id="pedidosTableView" layoutX="10" layoutY="40" prefHeight="200" prefWidth="500">
+            <columns>
+                <TableColumn fx:id="idPedidoColumn" prefWidth="100" text="ID Pedido">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="idPedido" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="estadoPedidoColumn" prefWidth="100" text="Estado Pedido">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="estadoPedido" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="observacionesColumn" prefWidth="100" text="Observaciones">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="observaciones" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="precioTotalColumn" prefWidth="100" text="Precio Total">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="precioTotal" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="clienteColumn" prefWidth="100" text="Cliente">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="cliente" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="fechaPedidoColumn" prefWidth="100" text="Fecha Pedido">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="fechaPedido" />
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+
+        <!-- Etiquetas y ComboBoxes -->
+        <Label layoutX="18.0" layoutY="251.0" text="Estado:" />
+        <ComboBox fx:id="estadoComboBox" layoutX="70.0" layoutY="244.0" prefHeight="26.0" prefWidth="100.0" />
+
+        <Label layoutX="182.0" layoutY="251.0" text="Cliente:" />
+        <ComboBox fx:id="clienteComboBox" layoutX="237.0" layoutY="247.0" prefWidth="150" />
+
+        <!-- Etiquetas para fechas -->
+        <Label layoutX="18.0" layoutY="297.0" text="Fecha Inicio:" />
+        <DatePicker fx:id="fechaInicioDatePicker" layoutX="95.0" layoutY="293.0" prefWidth="150" />
+
+        <Label layoutX="250.0" layoutY="297.0" text="Fecha Fin:" />
+        <DatePicker fx:id="fechaFinDatePicker" layoutX="312.0" layoutY="293.0" prefWidth="150" />
+
+        <!-- Tabla de Detalles de Pedido -->
+        <TableView fx:id="detallesPedidoTableView" layoutX="10.0" layoutY="323.0" prefHeight="200" prefWidth="583.0">
+            <columns>
+                <TableColumn fx:id="conexionColumn" prefWidth="150" text="Conexión">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="nombreConexion" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="cantidadColumn" prefWidth="100" text="Cantidad">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="cantidad" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="precioUnitarioColumn" prefWidth="100" text="Precio Unitario">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="precioUnitario" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="subtotalColumn" prefWidth="100" text="Subtotal">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="total" />
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+
+        <!-- Campo de Total -->
+        <Label layoutX="442.0" layoutY="532.0" text="Total Pedido:" />
+        <TextField fx:id="totalPedidoField" editable="false" layoutX="552.0" layoutY="528.0" prefWidth="150" />
+
+        <!-- Botones con etiquetas -->
+        <Button layoutX="569.0" layoutY="220.0" onAction="#agregarConexion" text="Agregar Conexión" AnchorPane.rightAnchor="2.0" />
+        <Button layoutX="569.0" layoutY="260.0" onAction="#guardarPedido" text="Guardar Pedido" AnchorPane.rightAnchor="2.0" />
+        <Button layoutX="569.0" layoutY="300.0" onAction="#eliminarPedido" text="Eliminar Pedido" AnchorPane.rightAnchor="2.0" />
+    </children>
 </AnchorPane>

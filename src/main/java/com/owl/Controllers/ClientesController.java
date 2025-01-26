@@ -45,8 +45,6 @@ public class ClientesController {
 
         // Configurar eventos
         configurarEventos();
-                cargarClientes();
-        configurarEventos();
 
         // Configurar Stage con ícono
         Platform.runLater(() -> {
@@ -56,7 +54,7 @@ public class ClientesController {
         });
     }
     
-
+    // Configura los eventos de los botones y búsqueda
     private void configurarEventos() {
         // Búsqueda de clientes
         searchButton.setOnMouseClicked(this::handleBusqueda);
@@ -72,20 +70,24 @@ public class ClientesController {
     }
 
     private void cargarClientes() {
-        listaClientes = ClientesUtils.cargarClientes("SELECT * FROM clientes");
+        String sql = "SELECT * FROM clientes"; // Consulta SQL
+        listaClientes = ClientesUtils.cargarClientes(sql); // Pasa la consulta como argumento
         clientesTable.setItems(listaClientes);
     }
-
+    
+    // Filtrar clientes en la tabla según texto de búsqueda
     private void filtrarClientes(String textoBusqueda) {
         ObservableList<Cliente> listaFiltrada = ClientesUtils.filtrarClientes(textoBusqueda, listaClientes);
         clientesTable.setItems(listaFiltrada);
     }
 
+    // Manejar búsqueda de clientes
     private void handleBusqueda(MouseEvent event) {
         String textoBusqueda = searchField.getText();
         filtrarClientes(textoBusqueda);
     }
 
+    // Manejar ver pedidos de un cliente
     private void handleVerPedidos(MouseEvent event) {
         Cliente clienteSeleccionado = clientesTable.getSelectionModel().getSelectedItem();
         if (clienteSeleccionado == null) {
@@ -99,13 +101,14 @@ public class ClientesController {
             Alert.AlertType.INFORMATION);
     }
 
+    // Manejar agregar cliente
     private void handleAgregarCliente(MouseEvent event) {
         try {
             Cliente nuevoCliente = ClienteDialog.mostrarDialogoAgregar();
             if (nuevoCliente != null) {
                 int idGenerado = ClientesUtils.agregarCliente(nuevoCliente);
                 if (idGenerado != -1) {
-                    cargarClientes();
+                    cargarClientes();  // Recargar la lista de clientes
                 }
             }
         } catch (Exception e) {
@@ -113,6 +116,7 @@ public class ClientesController {
         }
     }
 
+    // Manejar modificar cliente
     private void handleModificarCliente(MouseEvent event) {
         Cliente clienteSeleccionado = clientesTable.getSelectionModel().getSelectedItem();
         if (clienteSeleccionado == null) {
@@ -123,14 +127,15 @@ public class ClientesController {
         try {
             Cliente clienteModificado = ClienteDialog.mostrarDialogoEditar(clienteSeleccionado);
             if (clienteModificado != null) {
-                ClientesUtils.actualizarCliente(clienteModificado);
-                cargarClientes();
+                ClientesUtils.actualizarCliente(clienteModificado);  // Actualizar cliente en la base de datos
+                cargarClientes();  // Recargar la lista de clientes
             }
         } catch (Exception e) {
             ClientesUtils.mostrarAlerta("Error", "No se pudo modificar el cliente: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
+    // Manejar eliminar cliente
     private void handleEliminarCliente(MouseEvent event) {
         Cliente clienteSeleccionado = clientesTable.getSelectionModel().getSelectedItem();
         if (clienteSeleccionado == null) {
@@ -144,9 +149,10 @@ public class ClientesController {
         confirmacion.setHeaderText("¿Está seguro que desea eliminar este cliente?");
         confirmacion.setContentText("Esta acción no se puede deshacer.");
 
+        // Ejecutar la eliminación si se confirma
         if (confirmacion.showAndWait().orElse(null) == ButtonType.OK) {
             ClientesUtils.eliminarCliente(clienteSeleccionado.getId());
-            cargarClientes();
+            cargarClientes();  // Recargar la lista de clientes
         }
     }
 }

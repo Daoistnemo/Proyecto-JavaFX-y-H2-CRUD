@@ -1,85 +1,116 @@
 package com.owl.Models;
 
+import javafx.beans.property.*;
+
 public class DetallePedido {
-    private int idDetalle;
-    private int idPedido;
-    private String nombreProducto;
-    private int cantidad;
-    private double precioUnitario;
-    private double precioTotal;
+    // Propiedades existentes...
+    private final IntegerProperty idDetalle;
+    private final IntegerProperty idPedido;
+    private final IntegerProperty idConexion;
+    private final IntegerProperty cantidad;
+    private final DoubleProperty precioUnitario;
+    private final DoubleProperty total;
+    private final StringProperty nombreConexion;  // Nueva propiedad
 
-    // Constructor vacío
-    public DetallePedido() {}
-
-    // Constructor con todos los atributos
-    public DetallePedido(int idDetalle, int idPedido, String nombreProducto, int cantidad, double precioUnitario, double precioTotal) {
-        this.idDetalle = idDetalle;
-        this.idPedido = idPedido;
-        this.nombreProducto = nombreProducto;
-        this.cantidad = cantidad;
-        this.precioUnitario = precioUnitario;
-        this.precioTotal = precioTotal;
+    // Modificar el constructor existente
+    public DetallePedido(int idDetalle, int idPedido, int idConexion, int cantidad, double precioUnitario) {
+        this.idDetalle = new SimpleIntegerProperty(idDetalle);
+        this.idPedido = new SimpleIntegerProperty(idPedido);
+        this.idConexion = new SimpleIntegerProperty(idConexion);
+        this.cantidad = new SimpleIntegerProperty(cantidad);
+        this.precioUnitario = new SimpleDoubleProperty(precioUnitario);
+        this.total = new SimpleDoubleProperty(0);
+        this.nombreConexion = new SimpleStringProperty("");  // Inicializamos con un valor vacío
     }
 
-    // Getters y Setters
+    // Getter y setter para nombreConexion
+    public String getNombreConexion() {
+        return nombreConexion.get();
+    }
 
+    public void setNombreConexion(String nombre) {
+        this.nombreConexion.set(nombre);
+    }
+
+    public StringProperty nombreConexionProperty() {
+        return nombreConexion;
+    }
+
+    // Métodos para las propiedades existentes
     public int getIdDetalle() {
-        return idDetalle;
+        return idDetalle.get();
     }
 
     public void setIdDetalle(int idDetalle) {
-        this.idDetalle = idDetalle;
+        this.idDetalle.set(idDetalle);
+    }
+
+    public IntegerProperty idDetalleProperty() {
+        return idDetalle;
     }
 
     public int getIdPedido() {
-        return idPedido;
+        return idPedido.get();
     }
 
     public void setIdPedido(int idPedido) {
-        this.idPedido = idPedido;
+        this.idPedido.set(idPedido);
     }
 
-    public String getNombreProducto() {
-        return nombreProducto;
+    public IntegerProperty idPedidoProperty() {
+        return idPedido;
     }
 
-    public void setNombreProducto(String nombreProducto) {
-        this.nombreProducto = nombreProducto;
+    public int getIdConexion() {
+        return idConexion.get();
+    }
+
+    public void setIdConexion(int idConexion) {
+        this.idConexion.set(idConexion);
+    }
+
+    public IntegerProperty idConexionProperty() {
+        return idConexion;
     }
 
     public int getCantidad() {
-        return cantidad;
+        return cantidad.get();
     }
 
     public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+        this.cantidad.set(cantidad);
+    }
+
+    public IntegerProperty cantidadProperty() {
+        return cantidad;
     }
 
     public double getPrecioUnitario() {
-        return precioUnitario;
+        return precioUnitario.get();
     }
 
     public void setPrecioUnitario(double precioUnitario) {
-        this.precioUnitario = precioUnitario;
+        this.precioUnitario.set(precioUnitario);
     }
 
-    public double getPrecioTotal() {
-        return precioTotal;
+    public DoubleProperty precioUnitarioProperty() {
+        return precioUnitario;
     }
 
-    public void setPrecioTotal(double precioTotal) {
-        this.precioTotal = precioTotal;
+    public double getTotal() {
+        return total.get();
     }
 
-    @Override
-    public String toString() {
-        return "DetallePedido{" +
-                "idDetalle=" + idDetalle +
-                ", idPedido=" + idPedido +
-                ", nombreProducto='" + nombreProducto + '\'' +
-                ", cantidad=" + cantidad +
-                ", precioUnitario=" + precioUnitario +
-                ", precioTotal=" + precioTotal +
-                '}';
+    public void setTotal(double total) {
+        this.total.set(total);
+    }
+
+    public DoubleProperty totalProperty() {
+        return total;
+    }
+
+    // Método para calcular el total
+    public void calcularTotal() {
+        setTotal(getCantidad() * getPrecioUnitario());
     }
 }

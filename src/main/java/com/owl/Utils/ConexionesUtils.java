@@ -14,17 +14,6 @@ public class ConexionesUtils {
         return DBconexion.getConnection();
     }
 
-    // Método genérico para ejecutar una consulta SQL
-    private static void ejecutarConsulta(String query, Object... parametros) throws SQLException {
-        try (Connection connection = obtenerConexion();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            for (int i = 0; i < parametros.length; i++) {
-                statement.setObject(i + 1, parametros[i]);
-            }
-            statement.executeUpdate();
-        }
-    }
 
     // Método para obtener una conexión por su ID
     public static Conexiones obtenerConexionPorId(int idConexion) {

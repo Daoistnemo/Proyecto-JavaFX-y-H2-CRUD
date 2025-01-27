@@ -2,11 +2,11 @@
 Este proyecto es un sistema de gestión de pedidos desarrollado en Java con JavaFX para la interfaz gráfica y una base de datos H2 para el almacenamiento de datos. El sistema permite realizar operaciones básicas de un CRUD (Crear, Leer, Actualizar, Eliminar) sobre pedidos, clientes y detalles de pedidos.
 
 ## Funcionalidades Principales
-**Gestión de Pedidos:**
+Gestión de Pedidos
 
-**Crear nuevos pedidos.**
+Crear nuevos pedidos
 
-**Visualizar y filtrar pedidos existentes.**
+Visualizar y filtrar pedidos existentes
 
 Actualizar el estado de los pedidos.
 
@@ -36,18 +36,18 @@ Interfaz intuitiva y responsive desarrollada con JavaFX.
 
 Tablas interactivas para visualizar pedidos, clientes y detalles.
 
-Tecnologías Utilizadas
+## Tecnologías Utilizadas
 Java: Lenguaje de programación principal.
 
-JavaFX: Framework para la interfaz gráfica.
+**JavaFX:** Framework para la interfaz gráfica.
 
-H2: Base de datos embebida para almacenamiento local.
+**H2:** Base de datos embebida para almacenamiento local.
 
-JDBC: Conexión y manipulación de la base de datos.
+**JDBC:** Conexión y manipulación de la base de datos.
 
-Maven: Gestión de dependencias y construcción del proyecto.
+**Maven:** Gestión de dependencias y construcción del proyecto.
 
-### Estructura del Proyecto
+## Estructura del Proyecto
 ##**Modelos:** Clases que representan las entidades del sistema (Pedidos, Clientes, DetallePedido, etc.).
 
 #**Controladores:** Lógica de la interfaz gráfica y manejo de eventos.
@@ -57,11 +57,11 @@ Maven: Gestión de dependencias y construcción del proyecto.
 **Vistas:** Archivos FXML que definen la interfaz gráfica.
 
 ## Requisitos
-**-Java JDK 11 o superior.**
+**Java JDK 11 o superior.**
 
-**-Maven para la gestión de dependencias.**
+**Maven para la gestión de dependencias.**
 
-**-H2 Database (incluida en el proyecto).**
+**H2 Database (incluida en el proyecto).**
 
 # Cómo Ejecutar el Proyecto
 Clona el repositorio.
